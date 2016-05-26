@@ -63,25 +63,35 @@ int moveRook(int pieceID,int currentPosition[2], int nextPosition[2], int board[
 
     //This keeps track of total number of steps that can be taken, if rowMove is not zero then columnMove is zero, and vice versa
     int stepNumber = rowMove + columnMove;
+    int rowPosition = currentPosition[0];
+    int columnPosition = currentPosition[1];
 
-    while(stepNumber > 0)
+    while(stepNumber != 0)
     {
         if(rowMove > 0)
         {
             //Set the value of the square of the next piece position to the piece value
-            board[currentPosition[0] + 1][currentPosition[1]] = pieceID;
+            board[rowPosition][currentPosition[1]] = pieceID;
+            rowPosition = rowPosition + 1;
+            stepNumber = stepNumber - 1;
         }
         else if(rowMove < 0)
         {
-            board[currentPosition[0] - 1][currentPosition[1]] = pieceID;
+            board[rowPosition][currentPosition[1]] = pieceID;
+            rowPosition = rowPosition - 1;
+            stepNumber = stepNumber + 1;
         }
         else if(columnMove > 0)
         {
-            board[currentPosition[0]][currentPosition[1] + 1] = pieceID;
+            board[currentPosition[0]][columnPosition] = pieceID;
+            columnPosition = columnPosition + 1;
+            stepNumber = stepNumber - 1;
         }
         else if(columnMove < 0)
         {
-            board[currentPosition[0]][currentPosition[1] - 1] = pieceID;
+            board[currentPosition[0]][columnPosition] = pieceID;
+            columnPosition = columnPosition - 1;
+            stepNumber = stepNumber + 1;
         }
     }
 
@@ -136,9 +146,10 @@ int main()
                     {4,2,3,5,6,3,2,4}
                     };
 
+    //Test variables
     int current[2] = {7,2};
-    int next[2] = {4,2};
-    movePiece(3,current,next,fullBoard);
+    int next[2] = {7,6};
+    moveRook(3,current,next,fullBoard);
 
     printBoard(fullBoard);
 
