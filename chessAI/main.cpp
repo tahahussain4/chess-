@@ -36,7 +36,7 @@ int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board
     //Set the value of the square of the current piece position to zero
     board[currentPosition[0]][currentPosition[1]] = 0;
     //Set the value of the square of the next piece position to the piece value
-    board[currentPosition[0]][currentPosition[1]] = pieceID;
+    board[currentPosition[0] + rowMove][currentPosition[1] + columnMove] = pieceID;
 
     return 0;
 
@@ -61,9 +61,11 @@ int printBoard(int board[8][8])
 int main()
 {
 
-    //Setting up the board array
+    //Setting up an empty board array
+    //Position is indicated by (row,column) coordinate
+    //Black pieces are at the top of the array and white pieces are at the bottom of the array
 
-    int board[8][8] = {
+    int emptyBoard[8][8] = {
                     {0,0,0,0,0,0,0,0},
                     {0,0,0,0,0,0,0,0},
                     {0,0,0,0,0,0,0,0},
@@ -74,11 +76,24 @@ int main()
                     {0,0,0,0,0,0,0,0}
                     };
 
-    int current[2] = {5,5};
-    int next[2] = {2,2};
-    movePiece(3,current,next,board);
+    //Setting up a full board array
 
-    printBoard(board);
+    int fullBoard[8][8] = {
+                    {4,2,3,5,6,3,2,4},
+                    {1,1,1,1,1,1,1,1},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {1,1,1,1,1,1,1,1},
+                    {4,2,3,5,6,3,2,4}
+                    };
+
+    int current[2] = {7,2};
+    int next[2] = {4,2};
+    movePiece(3,current,next,fullBoard);
+
+    printBoard(fullBoard);
 
     return 0;
 }
