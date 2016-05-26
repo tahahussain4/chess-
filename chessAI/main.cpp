@@ -1,23 +1,32 @@
+/*
+Author: Paul Le
+
+This program is a chess AI engine that takes in a piece move and outputs the updated chess board as an array.
+*/
+
+
 #include <iostream>
 #include <stdio.h>
 
 using namespace std;
 
-//Piece ID refers to a value that designates a specific piece, and should not be confused with the relative value of the piece
-//Pawn: 1
-//Knight: 2
-//Bishop: 3
-//Rook: 4
-//Queen; 5
-//King: 6
+/*
+Piece ID refers to a value that designates a specific piece, and should not be confused with the relative value of the piece
+Pawn: 1
+Knight: 2
+Bishop: 3
+Rook: 4
+Queen; 5
+King: 6
 
-//Relative piece values determine which piece is worth more in order to make decisions
-//Pawn: 1
-//Knight: 3
-//Bishop: 3
-//Rook: 5
-//Queen; 9
-//King: over 9000
+Relative piece values determine which piece is worth more in order to make decisions
+Pawn: 1
+Knight: 3
+Bishop: 3
+Rook: 5
+Queen; 9
+King: over 9000
+*/
 
 int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8])
 {
