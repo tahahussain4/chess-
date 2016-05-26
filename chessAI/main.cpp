@@ -3,6 +3,15 @@
 
 using namespace std;
 
+int movePiece(int currentPosition[2], int nextPosition[2])
+{
+    int rowMove;
+    int columnMove;
+
+    rowMove = nextPosition[0] - currentPosition[0];
+    columnMove = nextPosition[1] - currentPosition[1];
+}
+
 int main()
 {
 
@@ -18,8 +27,6 @@ int main()
                     {0,0,0,0,0,0,0,0},
                     {0,0,0,0,0,0,0,0}
                     };
-
-    printf("%i",board[0][0]);
 
     return 0;
 }
