@@ -42,6 +42,22 @@ int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board
 
 }
 
+int printBoard(int board[8][8])
+{
+    //Print out the board array for visualization
+    for(int i = 0; i < 8; i++)
+    {
+
+        for(int j = 0; j < 8; j++)
+        {
+            printf("%i",board[i][j]);
+        };
+
+        printf("\n");
+
+    };
+}
+
 int main()
 {
 
@@ -62,17 +78,7 @@ int main()
     int next[2] = {2,2};
     movePiece(3,current,next,board);
 
-    //Print out the board array for visualization
-    for(int i = 0; i < 8; i++)
-    {
-        for(int j = 0; j < 8; j++)
-        {
-            printf("%i",board[i][j]);
-        };
-
-        printf("\n");
-
-    };
+    printBoard(board);
 
     return 0;
 }
