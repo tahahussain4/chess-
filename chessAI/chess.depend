@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1464286676 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\main.cpp
+	<iostream>
+	<stdio.h>
+
