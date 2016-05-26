@@ -42,6 +42,53 @@ int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board
 
 }
 
+int moveRook(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8])
+{
+
+    //This function moves a piece and updates the board array
+    //It takes in the current position of the piece and the final position of the piece, and updates the board array to reflect that move
+
+    //These variables store how much the piece was moved in the row and column directions
+    int rowMove;
+    int columnMove;
+
+    //Calculate how far the piece was moved in the row and column direction
+    rowMove = nextPosition[0] - currentPosition[0];
+    columnMove = nextPosition[1] - currentPosition[1];
+
+    //Set the value of the square of the current piece position to zero
+    board[currentPosition[0]][currentPosition[1]] = 0;
+
+    //This for loop iterates through all the adjacent square steps taken in order to reach the next position, and performs some kind of logic for each square
+
+    //This keeps track of total number of steps that can be taken, if rowMove is not zero then columnMove is zero, and vice versa
+    int stepNumber = rowMove + columnMove;
+
+    while(stepNumber > 0)
+    {
+        if(rowMove > 0)
+        {
+            //Set the value of the square of the next piece position to the piece value
+            board[currentPosition[0] + 1][currentPosition[1]] = pieceID;
+        }
+        else if(rowMove < 0)
+        {
+            board[currentPosition[0] - 1][currentPosition[1]] = pieceID;
+        }
+        else if(columnMove > 0)
+        {
+            board[currentPosition[0]][currentPosition[1] + 1] = pieceID;
+        }
+        else if(columnMove < 0)
+        {
+            board[currentPosition[0]][currentPosition[1] - 1] = pieceID;
+        }
+    }
+
+    return 0;
+
+}
+
 int printBoard(int board[8][8])
 {
     //Print out the board array for visualization
