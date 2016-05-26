@@ -1,2 +1,2 @@
 # chess-
-practicing C++
+practicing C++ by building a chess AI
