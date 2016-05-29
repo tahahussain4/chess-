@@ -68,15 +68,21 @@ int main()
 
     int x, y;
 
-    printf("Enter the x and y position of the piece you would like to move: ");
+    printf("Enter the x position of the piece you would like to move: ");
     scanf("%i",&x);
+    printf("Enter the y position of the piece you would like to move: ");
     scanf("%i",&y);
 
-    //Test variables
-    //int current[2] = {7,2};
-    int current[2] = {x,y};
-    int next[2] = {7,6};
-    moveRook(3,current,next,fullBoard);
+    int current[2] = {y - 1,x - 1};
+
+    printf("Enter the x position of the position you would like to move to: ");
+    scanf("%i",&x);
+    printf("Enter the y position of the position you would like to move to: ");
+    scanf("%i",&y);
+
+    int next[2] = {y - 1,x - 1};
+
+    movePiece(3,current,next,fullBoard);
 
     printBoard(fullBoard);
 
