@@ -28,6 +28,61 @@ Queen; 9
 King: over 9000
 */
 
+//Function prototypes
+int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8]);
+int moveRook(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8]);
+int printBoard(int board[8][8]);
+
+int main()
+{
+
+    //Setting up an empty board array
+    //Position is indicated by (row,column) coordinate
+    //Black pieces are at the top of the array and white pieces are at the bottom of the array
+
+    int emptyBoard[8][8] = {
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0}
+                    };
+
+    //Setting up a full board array
+
+    int fullBoard[8][8] = {
+                    {4,2,3,5,6,3,2,4},
+                    {1,1,1,1,1,1,1,1},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0},
+                    {1,1,1,1,1,1,1,1},
+                    {4,2,3,5,6,3,2,4}
+                    };
+
+    //Take input variables
+
+    int x, y;
+
+    printf("Enter the x and y position of the piece you would like to move: ");
+    scanf("%i",&x);
+    scanf("%i",&y);
+
+    //Test variables
+    //int current[2] = {7,2};
+    int current[2] = {x,y};
+    int next[2] = {7,6};
+    moveRook(3,current,next,fullBoard);
+
+    printBoard(fullBoard);
+
+    return 0;
+}
+
 int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8])
 {
 
@@ -122,45 +177,4 @@ int printBoard(int board[8][8])
         printf("\n");
 
     };
-}
-
-int main()
-{
-
-    //Setting up an empty board array
-    //Position is indicated by (row,column) coordinate
-    //Black pieces are at the top of the array and white pieces are at the bottom of the array
-
-    int emptyBoard[8][8] = {
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0}
-                    };
-
-    //Setting up a full board array
-
-    int fullBoard[8][8] = {
-                    {4,2,3,5,6,3,2,4},
-                    {1,1,1,1,1,1,1,1},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {1,1,1,1,1,1,1,1},
-                    {4,2,3,5,6,3,2,4}
-                    };
-
-    //Test variables
-    int current[2] = {7,2};
-    int next[2] = {7,6};
-    moveRook(3,current,next,fullBoard);
-
-    printBoard(fullBoard);
-
-    return 0;
 }
