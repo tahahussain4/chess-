@@ -82,7 +82,7 @@ int main()
 
     int next[2] = {y - 1,x - 1};
 
-    movePiece(3,current,next,fullBoard);
+    moveRook(3,current,next,fullBoard);
 
     printBoard(fullBoard);
 
