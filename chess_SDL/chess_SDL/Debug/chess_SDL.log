@@ -1,0 +1,25 @@
+﻿  Chess_GUI.cpp
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(124): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(138): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(148): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(149): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(151): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(166): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(184): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(186): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(204): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(211): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(218): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(225): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(232): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(239): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(199): warning C4101: 'str1': unreferenced local variable
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(306): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(325): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(379): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(399): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(400): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(402): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(403): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\snoopy\documents\github\chess-\chess_sdl\chess_sdl\chess_gui.cpp(408): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  chess_SDL.vcxproj -> C:\Users\snoopy\Documents\GitHub\chess-\chess_SDL\Debug\chess_SDL.exe

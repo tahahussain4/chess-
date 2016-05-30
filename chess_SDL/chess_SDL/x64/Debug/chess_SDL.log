@@ -1,0 +1,9 @@
+﻿  stdafx.cpp
+  chess_SDL.cpp
+c:\users\snoopy\documents\visual studio 2015\projects\chess_sdl\chess_sdl\chess_sdl.cpp(169): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\snoopy\documents\visual studio 2015\projects\chess_sdl\chess_sdl\chess_sdl.cpp(175): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\users\snoopy\documents\visual studio 2015\projects\chess_sdl\chess_sdl\chess_sdl.cpp(224): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\snoopy\documents\visual studio 2015\projects\chess_sdl\chess_sdl\chess_sdl.cpp(238): error C2065: 'GWL_HINSTANCE': undeclared identifier
+c:\users\snoopy\documents\visual studio 2015\projects\chess_sdl\chess_sdl\chess_sdl.cpp(238): error C2660: 'CreateWindowExW': function does not take 11 arguments
+  Chess_AI.cpp
+  Generating Code...

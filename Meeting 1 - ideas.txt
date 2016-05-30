@@ -1,0 +1,15 @@
+Two aspects 
+-visual 
+-AI
+-HMI
+
+First basic stpes
+-design simple protype
+
+Baisc requirements:
+-Game looks like chessboard 
+-Game follows chess rules
+-Player can control their pieces
+-When clicking on piece all options of play displayed
+-Have a RESET button
+
