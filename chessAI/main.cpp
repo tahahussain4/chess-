@@ -7,6 +7,7 @@ This program is a chess AI engine that takes in a piece move and outputs the upd
 
 #include <iostream>
 #include <stdio.h>
+#include "moveFunctions.h"
 
 using namespace std;
 
@@ -27,11 +28,6 @@ Rook: 5
 Queen; 9
 King: over 9000
 */
-
-//Function prototypes
-int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8]);
-int moveRook(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8]);
-int printBoard(int board[8][8]);
 
 int main()
 {
