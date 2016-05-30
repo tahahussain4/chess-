@@ -15,7 +15,7 @@ bool				frontPage = false;
 bool				gamePage = true;
 bool				bStartClicked,bExitClicked = false;
 bool				squareClickedResponse = false;		//flag to response
-
+bool				squareHoverResponse = false;
 
 
 
@@ -69,11 +69,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
 
-//
-//  FUNCTION: MyRegisterClass()
-//
-//  PURPOSE: Registers the window class.
-//
+///
+///  FUNCTION: MyRegisterClass()
+///
+///  PURPOSE: Registers the window class.
+///
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     wcex.cbSize = sizeof(WNDCLASSEX);
@@ -155,6 +155,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	int y; //getting y coordinate
 	RECT lpRect; //getting 
 	bool tilePressed;
+	coordHolder hoverCoords;
+
     switch (message)
     {
     case WM_COMMAND:
@@ -224,33 +226,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			squareClickedResponse = false;
 		}		
 
-		//----------------------------------------------------------
+		//SQUARE HOVER---------------------------------------------
+		if (squareHoverResponse == true) {
+			squareHoverResp(hdc);
+			squareHoverResponse = false;
+		}
 
-		//CAN be used for hovering mouse over tiles
-		//if ((squareClickedResponse == true) && 0 && false) {
-		//	//if same square unhighlight it 
-		//	if ((matrixSquareClicked[(squareClickedCoords[2])][squareClickedCoords[3]]) == 1) {
-		//		//CHECK IF ANOTHER SQUARE HAS BEEN CLICKED IF YES
-		//		drawRectangle(hdc, squareClickedCoords[0], squareClickedCoords[1], squareClickedCoords[0] + widthSquare, squareClickedCoords[1] + widthSquare,
-		//			matrixBackground[squareClickedCoords[2]][squareClickedCoords[3]], NULL);
-
-
-		//		matrixSquareClicked[squareClickedCoords[2]][squareClickedCoords[3]] = 0;
-		//	}
-		//	else {
-		//		//check if square even needs ot be highlighted
-		//		//RULE 1 : NO MORE THAN ONE SQUARE CAN BE CLICKED
-		//		//RULE 2 : SQUARE THAT IS CLICKED MUST HAV ESOMETHING IN IT
-		//		//RULE 3 : SQUARE CLICKED THIRD TIME MUST NOT HAVE ANYTHING IN IT
-		//		//goto brokeSquareHighlightRule;
-		//		//higlight rec
-		//		drawRectangle(hdc, squareClickedCoords[0], squareClickedCoords[1], squareClickedCoords[0] + widthSquare, squareClickedCoords[1] + widthSquare,
-		//			CreateSolidBrush(RGB(150, 230, 150)), NULL);
-
-		//		matrixSquareClicked[squareClickedCoords[2]][squareClickedCoords[3]] = 1;
-		//	}
-		//	squareClickedResponse = false;
-		//}
 
 		//AI processes its things and calls invalidate rect
 
@@ -265,8 +246,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
 
 		
-
-
 		//CODE END:
         break;
 
@@ -295,6 +274,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		lpRect.bottom = WINDOW_L;
 		InvalidateRect(hWnd, &lpRect, false);
 		break;
+
+	//case WM_MOUSEMOVE:
+
+	//	//get mouse props
+	//	x = LOWORD(lParam);
+	//	y = HIWORD(lParam);
+
+	//	hoverCoords = getTileHover(x, y);
+	//	if (hoverCoords.actualX == -1) {
+	//		break;
+	//	}
+	//	squareHoverResponse = true;
+
+	//	lpRect.left = 0;
+	//	lpRect.top = 0;
+	//	lpRect.right = WINDOW_W;
+	//	lpRect.bottom = WINDOW_L;
+	//	InvalidateRect(hWnd, &lpRect, false);
 
     case WM_DESTROY:
         PostQuitMessage(0);

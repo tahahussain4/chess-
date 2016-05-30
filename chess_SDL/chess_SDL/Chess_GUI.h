@@ -18,8 +18,8 @@
 //piece variables
 #define KING 6
 #define QUEEN 5
-#define ROOKH 4
-#define HORSE 3
+#define ROOKH 3
+#define HORSE 4
 #define ELEPHANT 2
 #define MINION 6
 
@@ -47,19 +47,22 @@ typedef struct chessPiece {
 	int num ;
 	char colour ;
 	bool atHome = true;
+	int pos[2] = { 0,0 };
 } chessPiece;
 
 //FUNCTION PROTTYPES
 void frontPageDraw(HWND hWnd);
 void gamePageDraw(HWND hWnd, HDC hdc);
-
-bool getTilePressed(int x, int y );
 void drawRectangle(HDC hdc, int left, int top, int right, int bottom, HBRUSH back, HBRUSH frame);
-bool checkMovementRules(coordHolder current, coordHolder previous, int pieceNumint , chessPiece matrixRec[8][8]);
 void printPieces(HDC hdc, SQUARETILE matrixSquareTile[8][8], chessPiece matrixRec[8][8]);
 
+bool getTilePressed(int x, int y );
+coordHolder getTileHover(int x, int y);
+
+
+
+
 void squareClickResponse(HDC hdc);
-void twiceSameClickedSequence(HDC hdc, int XIndex, int YIndex);
-void onceClickedSequence(HDC hdc, int XIndex, int YIndex);
-void twiceDifferentClickedSequence(HDC hdc, int XIndex, int YIndex, int pXIndex, int pYIndex);
+void squareHoverResp(HDC hdc);
+
 #endif

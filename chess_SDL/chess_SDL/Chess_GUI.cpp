@@ -4,7 +4,28 @@
 #include "math.h"
 
 //FUNCTION prototyprd
+bool checkMovementRules(coordHolder current, coordHolder previous, int pieceNumint, chessPiece matrixRec[8][8]);
+bool rulesKingCheck(float diffX, float diffY);
+bool rulesQueenCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY);
+bool rulesRookhCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY);
+bool rulesHorseCheck(float diffX, float diffY);
+bool rulesElephantCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY);
+bool rulesMinionCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY, int goingToY, int goingToX);
 bool pathCheck(float diffX, float diffY, int directionX, int directionY, int tempX, int tempY, chessPiece matrixRec[8][8]);
+
+bool checkDetect(coordHolder goingTo, coordHolder comingFrom);
+void friendlyKingPos(chessPiece tempStorage[8][8], int kingPos[2]);
+bool checkKing(int i, int j, int kingPos[2]);
+bool checkQueen(chessPiece tempStorage[8][8], int i, int j);
+bool checkRookh(chessPiece tempStorage[8][8], int i, int j);
+bool checkHorse(int i, int j, int kingPos[2]);
+bool checkElephant(chessPiece tempStorage[8][8], int i, int j);
+
+void twiceSameClickedSequence(HDC hdc, int XIndex, int YIndex);
+void onceClickedSequence(HDC hdc, int XIndex, int YIndex);
+void twiceDifferentClickedSequence(HDC hdc, int XIndex, int YIndex, int pXIndex, int pYIndex);
+
+
 //GLOBAL variables Front page
 HWND				hwndButton, hwndButton2;
 bool				firstTimeGameDisp = true;
@@ -139,9 +160,7 @@ void frontPageDraw(HWND hWnd) {
 
 }
 
-/*
-*BREIF : Draws teh checker board and the letters
-*/
+//BREIF : Draws teh checker board and the letters
 void gamePageDraw(HWND hWnd, HDC hdc ) {
 
 	//Create exit buttons
@@ -192,8 +211,7 @@ void gamePageDraw(HWND hWnd, HDC hdc ) {
 }
 
 //draw all pieces
-//6 minions
-// 1 - King 2- QUEeen 3 - BISHOP 4-DONKEY 5-ELEPHANT - REST ARE ZERO
+//6-minions  1 - King 2- QUEeen 3 - BISHOP 4-DONKEY 5-ELEPHANT - REST ARE ZERO
 void printPieces(HDC hdc, SQUARETILE matrixSquareTile[8][8], chessPiece matrixRec[8][8]) {
 	LPSTR str[6] = { "1","2","3","4","5","6" };
 	LPSTR str1;
@@ -247,9 +265,7 @@ void printPieces(HDC hdc, SQUARETILE matrixSquareTile[8][8], chessPiece matrixRe
 	}
 }
 
-/*
-*BREIF :Draws A rectanlge based on the COORDINATES , BACKGROUND and FRAME
-*/
+//BREIF :Draws A rectanlge based on the COORDINATES , BACKGROUND and FRAME
 void drawRectangle(HDC hdc,int left,int top,int right,int bottom,HBRUSH back, HBRUSH frame  ) {
 	RECT recColour;
 
@@ -266,6 +282,10 @@ void drawRectangle(HDC hdc,int left,int top,int right,int bottom,HBRUSH back, HB
 		FrameRect(hdc, &recColour, frame);
 	}
 }
+
+
+
+
 
 
 //responds when a tile is clicked to decide weather to highlight ,unhighlight or move a piece
@@ -294,7 +314,6 @@ void squareClickResponse(HDC hdc) {
 	}
 }
 
-//when click on a tile tile with a piece twice
 //unlights if it detect it was clicked once already
 void twiceSameClickedSequence(HDC hdc, int XIndex, int YIndex) {
 	drawRectangle(hdc,
@@ -344,14 +363,14 @@ void twiceDifferentClickedSequence(HDC hdc, int XIndex, int YIndex, int pXIndex,
 
 	if ((matrixPieces[YIndex][XIndex].num) == 0 || matrixPieces[YIndex][XIndex].colour != matrixPieces[pYIndex][pXIndex].colour) {
 		//rules applied
-		if (checkMovementRules(
+		if (checkDetect(squareClickedCoords, prevClicked) && checkMovementRules(
 			squareClickedCoords,
 			prevClicked,
 			matrixPieces[pYIndex][pXIndex].num,
 			matrixPieces)
-			) {
-
-			//if empty change matrixRect
+			 ){
+			
+			//make trasition of matrix
 			matrixPieces[YIndex][XIndex] = matrixPieces[pYIndex][pXIndex];
 			matrixPieces[pYIndex][pXIndex].num = 0;
 			matrixPieces[pYIndex][pXIndex].colour = 'n';
@@ -385,107 +404,150 @@ void twiceDifferentClickedSequence(HDC hdc, int XIndex, int YIndex, int pXIndex,
 }
 
 
-//THING TO ADDF
-//
-//special moiinon kill rule which makes it go diagonal
-//end of the line rule where you can change the chracters into something stronger
-/**
-* BREIF : Check if the movement received thoruhg inputs is accroding to chess rules
-* RETURN : TRUE is all rules met else FALSE
-*/
-bool checkMovementRules(coordHolder current, coordHolder previous, int pieceNum, chessPiece matrixRec[8][8]) {
-	//keep in mind that the piece has not moved yet
-	float mag;
+
+
+
+
+//BREIF : Check if the movement received thoruhg inputs is accroding to chess rules. 
+//RETURN : TRUE is all rules met else FALSE
+bool checkMovementRules(coordHolder current, coordHolder previous, int pieceNum, chessPiece matrixPieces[8][8]) {
+	//NOTE: keep in mind that the piece has not moved yet for the first part of the check
+
 	float diffX = current.virtualX - previous.virtualX;
 	float diffY = current.virtualY - previous.virtualY;
-	int tempX = previous.virtualX, tempY = previous.virtualY;
+	int comingFromX = previous.virtualX, comingFromY = previous.virtualY;
+	int goingToX = current.virtualX, goingToY = current.virtualY;
 	int directionY = diffY / abs((int)diffY);
 	int directionX = diffX / abs((int)diffX);
-	switch (pieceNum) {
-		//KING 
-	case 1:
-		//calculate magnitude
-		mag = sqrt(diffX*diffX + diffY*diffY);
-		if (mag > 1.5) {
-			return false;
-		}
-		break;
-		//QUEEN
-	case 2:
-		//case one
-		if (diffY == 0 || diffX == 0 || diffX == diffY || diffX == -diffY) {
-			//find out if something in the way
-			return (pathCheck(diffX, diffY, directionX, directionY, tempX, tempY, matrixRec));
-		}
-		else {
-			return false;
-		}
-		break;
-		//ROOKH
-	case 3:
-		if (diffX == diffY || diffX == -diffY) {
-			//fiond out if something in the way
-			return (pathCheck(diffX, diffY, directionX, directionY, tempX, tempY, matrixRec));
-		}
-		else {
-			return false;
-		}
-		break;
-		//horse
-	case 4:
-		if ((abs((int)diffY) == 2 && abs((int)diffX) == 1) ||
-			(abs((int)diffX) == 2 && abs((int)diffY) == 1)) {
-		}
-		else {
-			return false;
-		}
-		break;
-		//elephant
-	case 5:
-		if (diffX == 0.0 || diffY == 0) {
-			//find out if something in way
-			return (pathCheck(diffX, diffY, directionX, directionY, tempX, tempY, matrixRec));
-		}
-		//
-		else {
-			return false;
-		}
-		break;
 
-		//Minion
-	case 6:
-		//NOTE : three things
-		//1 : are restrticted to move either one or down
-		//2 :can move tweo steps sometimes and move sideways in soecial case
-		//3 :can turn into power shits when reach otehr side
-		if (matrixRec[tempY][tempX].colour == homeColour) {
-			if (diffY == -1 && diffX == 0) {}
-			else if (diffY == -2 && diffX == 0 && matrixRec[tempY][tempX].atHome == true) {}
-			else if (diffY == -1 && abs((int)diffX) == 1) {  //cut another piece
-				if (matrixRec[current.virtualY][current.virtualX].colour != matrixRec[previous.virtualY][previous.virtualX].colour) {}
-				else { return false; }
-			}
-			else { return false; }
-		}
-		else {
-			if (diffY == 1 && diffX == 0) {}   //move strright
-			else if (diffY == 2 && diffX == 0 && matrixRec[tempY][tempX].atHome == true) {}  //move tow spaces
-			else if (diffY == 1 && abs((int)diffX) == 1) {  //cut another piece
-				if (matrixRec[current.virtualY][current.virtualX].colour != matrixRec[previous.virtualY][previous.virtualX].colour) {}
-				else { return false; }
-			}			
-			else { return false; };
-		}
-		matrixRec[tempY][tempX].atHome = false;
+	switch (pieceNum) {
+	//KING 
+	case 1:
+		if (rulesKingCheck(diffX,diffY)) {}
+		else { return false; }
 		break;
+	//QUEEN
+	case 2:
+		if (rulesQueenCheck(diffX,  diffY,  directionX,  directionY,  comingFromX,  comingFromY)) {}
+		else { return false; }
+		break;
+	//ROOKH
+	case 3:
+		if (rulesRookhCheck( diffX,  diffY,  directionX,  directionY,  comingFromX,  comingFromY)) {}
+		else { return false; }
+		break;
+	//horse
+	case 4:
+		if (rulesHorseCheck( diffX,  diffY)) {}
+		else { return false; }
+		break;
+	//elephant
+	case 5:
+		if (rulesElephantCheck( diffX,  diffY,  directionX,  directionY,  comingFromX,  comingFromY)) {}
+		else { return false; }
+		break;
+	//Minion
+	case 6:
+		if (rulesMinionCheck( diffX,  diffY,  directionX,  directionY,  comingFromX,  comingFromY,  goingToY,  goingToX)) {}
+		else { return false; }
+		break;
+	}
+
+	return true;
+}
+
+//see if king movement obeys the movement rules
+bool rulesKingCheck(float diffX, float diffY) {
+	//calculate magnitude
+	float mag;
+	mag = sqrt(diffX*diffX + diffY*diffY);
+	if (mag > 1.5) {
+		return false;
 	}
 	return true;
 }
 
-/*
-*BRIEF :check the path based on the coordinates recieved
-*For ELEPHANT, ROOKH, QUEEN
-*/
+//see if queen movement obeys the movement rules
+bool rulesQueenCheck(float diffX, float diffY,int directionX, int directionY, int comingFromX, int comingFromY) {
+	//case one
+	if (diffY == 0 || diffX == 0 || diffX == diffY || diffX == -diffY) {
+		//find out if something in the way
+		if (!pathCheck(diffX, diffY, directionX, directionY, comingFromX, comingFromY, matrixPieces)) { return false; };
+	}
+	else { return false; }
+
+	return true;
+}
+
+//see if rookh movement obeys the movement rules
+bool rulesRookhCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY) {
+	if (diffX == diffY || diffX == -diffY) {
+		//fiond out if something in the way
+		if (!pathCheck(diffX, diffY, directionX, directionY, comingFromX, comingFromY, matrixPieces)) { return false; };
+	}
+	else {
+		return false;
+	}
+	return true;
+}
+
+//see if horse movement obeys the movement rules
+bool rulesHorseCheck(float diffX, float diffY) {
+	if ((abs((int)diffY) == 2 && abs((int)diffX) == 1) ||
+		(abs((int)diffX) == 2 && abs((int)diffY) == 1)) {
+	}
+	else {
+		return false;
+	}
+	return true;
+}
+
+//see if elephant movement obeys the movement rules
+bool rulesElephantCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY) {
+	if (diffX == 0.0 || diffY == 0) {
+		//find out if something in way
+		if (!pathCheck(diffX, diffY, directionX, directionY, comingFromX, comingFromY, matrixPieces)) { return false; };
+	} 		//
+	else {
+		return false;
+	}
+	return true;
+}
+
+//see if minon movement obeys chess rules
+bool rulesMinionCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY ,int goingToY, int goingToX) {
+	//NOTE : 
+	//1 : are restrticted to move either one or down
+	//2 :can move tweo steps sometimes and move sideways in soecial case
+	//3 :can turn into power shits when reach otehr side
+	//4 : can not cut by moving strasight but only sideways
+	//5 when cutting siudeways make sure somethign is there
+
+	if (matrixPieces[comingFromY][comingFromX].colour == homeColour) {
+		if (diffY == -1 && diffX == 0 && matrixPieces[goingToY][goingToX].num == 0) {}
+		else if (diffY == -2 && diffX == 0 && matrixPieces[comingFromY][comingFromX].atHome == true && matrixPieces[goingToY][goingToX].num == 0) {}
+		else if (diffY == -1 &&
+			(abs((int)diffX) == 1) &&
+			matrixPieces[goingToY][goingToX].num != 0) {  //cut another piece
+		}
+		else { return false; }
+	}
+	else {
+		if (diffY == 1 && diffX == 0 && matrixPieces[goingToY][goingToX].num == 0) {}   //move strright
+		else if (diffY == 2 && diffX == 0 && matrixPieces[comingFromY][comingFromX].atHome == true && matrixPieces[goingToY][goingToX].num == 0) {}  //move tow spaces
+		else if (diffY == 1 &&
+			abs((int)diffX) == 1 &&
+			matrixPieces[goingToY][goingToX].num != 0) {  //cut another piece
+		}
+		else { return false; };
+	}
+	matrixPieces[comingFromY][comingFromX].atHome = false;
+
+	return true;
+}
+
+//BRIEF :check the path for obstructions based on the coordinates recieved
+//For ELEPHANT, ROOKH, QUEEN
 bool pathCheck(float diffX, float diffY, int directionX, int directionY, int tempX, int tempY, chessPiece matrixRec[8][8]) {
 	for (int i = 0; i < abs((int)diffY) - 1; i++) {
 		if (matrixRec[tempY + directionY][tempX + directionX].num != 0) {
@@ -496,6 +558,216 @@ bool pathCheck(float diffX, float diffY, int directionX, int directionY, int tem
 	}
 	return true;
 }
+
+
+
+
+
+
+
+//detects if move will lead to a check postion which has been present or made due to move
+bool checkDetect(coordHolder goingTo, coordHolder comingFrom) {
+	//====================================================================================
+	//===================================================================================
+	int goingToX = goingTo.virtualX;
+	int goingToY = goingTo.virtualY;
+	int comingFromX = comingFrom.virtualX;
+	int comingFromY = comingFrom.virtualY;
+
+	//TEST FOR KING IN HARMS WAY - KEEP IN MIND THAT PIECE WILL BE MOVED TO GET NEW PATHS
+
+	//make a copy of the old matrix
+	chessPiece tempStorage[8][8];
+	for (int k = 0; k < 8; k++) {
+		for (int l = 0; l < 8; l++) {
+			tempStorage[k][l] = matrixPieces[k][l];
+		}
+	}
+
+
+	//assign new indices
+	tempStorage[goingToY][goingToX] = tempStorage[comingFromY][comingFromX];
+	tempStorage[comingFromY][comingFromX].num = 0;
+	tempStorage[comingFromY][comingFromX].colour = 'n';
+	tempStorage[comingFromY][comingFromX].atHome = false;
+
+
+	//find pos of friendly king
+	int kingPos[2] = { 0,0 };
+	friendlyKingPos(tempStorage, kingPos);
+
+	//find enemies in new matrix and check path for overlay with king
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			//not friendly colour and is not empty
+			if (tempStorage[i][j].colour != turnColour && tempStorage[i][j].num != 0) {
+
+				switch (tempStorage[i][j].num) {
+				//KING
+				case 1:
+					if(checkKing(i,j,kingPos)){}
+					else { return false; }
+					break;
+				//QUEEN
+				case 2:
+					if (checkQueen(tempStorage, i, j)) {}
+					else { return false; }
+					break;
+				//ROOKH
+				case 3:
+					if (checkRookh(tempStorage, i, j)) {}
+					else { return false; }
+					break;
+
+				//HORSE
+				case 4:
+					if (checkHorse(i, j, kingPos)) {}
+					else { return false; }
+					break;
+				//ELEPHANT
+				case 5:
+					//go through the  paths
+					if (checkElephant(tempStorage, i, j)) {}
+					else { return false; }
+					break;
+				//MINION
+				case 6:
+					break;
+
+				}
+			}
+		}
+	}
+	return true;
+}
+
+//see if check can be caused by king
+bool checkKing(int i,int j ,int kingPos[2]) {
+	if ((i + 1 == kingPos[0] && j + 0 == kingPos[1]) ||
+		(i + 1 == kingPos[0] && j + 1 == kingPos[1]) ||
+		(i + 1 == kingPos[0] && j - 1 == kingPos[1]) ||
+		(i - 1 == kingPos[0] && j + 0 == kingPos[1]) ||
+		(i - 1 == kingPos[0] && j + 1 == kingPos[1]) ||
+		(i - 1 == kingPos[0] && j - 1 == kingPos[1]) ||
+		(i + 0 == kingPos[0] && j + 1 == kingPos[1]) ||
+		(i + 0 == kingPos[0] && j - 1 == kingPos[1])) {
+
+		return false;
+	}
+
+	return true;
+}
+
+//see if check can be caused by queen
+bool checkQueen(chessPiece tempStorage[8][8],int i, int j) {
+	int queenDir[8][2] = { { 1,0 },{ 0,1 },{ -1,0 },{ 0,-1 },{ 1,1 },{ -1,-1 },{ -1,1 },{ 1,-1 } };
+	for (int a = 0; a < 8; a++) {
+		for (int b = 1; b < 8; b++) {
+			//if reach end of matrix then break
+			if (i + b*queenDir[a][0] == 8 || j + b*queenDir[a][1] == 8
+				|| i + b*queenDir[a][0] == 0 || j + b*queenDir[a][1] == 0) {
+				break;
+			}
+
+			//if land on a non number break 
+			//if KING(1) of opposite team then false
+			if (tempStorage[i + b*queenDir[a][0]][j + b*queenDir[a][1]].num != 0) {
+				if (tempStorage[i + b*queenDir[a][0]][j + b*queenDir[a][1]].num == 1 &&
+					tempStorage[i + b*queenDir[a][0]][j + b*queenDir[a][1]].colour == turnColour) {
+
+					return false;
+				}
+				else break;
+			}
+		}
+	}
+	return true;
+}
+
+//see if check casued by rookh
+bool checkRookh(chessPiece tempStorage[8][8], int i, int j) {
+	int rookDir[4][2] = { { 1,1 },{ -1,-1 },{ -1,1 },{ 1,-1 } };
+	for (int a = 0; a < 4; a++) {
+		for (int b = 1; b < 8; b++) {
+			//if reach end of matrix then break
+			if (i + b*rookDir[a][0] == 8 || j + b*rookDir[a][1] == 8
+				|| i + b*rookDir[a][0] == 0 || j + b*rookDir[a][1] == 0) {
+				break;
+			}
+
+			//if land on a non number break 
+			//if KING(1) of opposite team then false
+			if (tempStorage[i + b*rookDir[a][0]][j + b*rookDir[a][1]].num != 0) {
+				if (tempStorage[i + b*rookDir[a][0]][j + b*rookDir[a][1]].num == 1 &&
+					tempStorage[i + b*rookDir[a][0]][j + b*rookDir[a][1]].colour == turnColour) {
+
+					return false;
+				}
+				else break;
+			}
+		}
+	}
+	return true;
+}
+
+//see if check caused by horse
+bool checkHorse(int i, int j, int kingPos[2]) {
+	if ((i + 2 == kingPos[0] && j + 1 == kingPos[1]) ||
+		(i + 2 == kingPos[0] && j - 1 == kingPos[1]) ||
+		(i - 2 == kingPos[0] && j + 1 == kingPos[1]) ||
+		(i - 2 == kingPos[0] && j - 1 == kingPos[1]) ||
+		(i + 1 == kingPos[0] && j + 2 == kingPos[1]) ||
+		(i + 1 == kingPos[0] && j - 2 == kingPos[1]) ||
+		(i - 1 == kingPos[0] && j + 2 == kingPos[1]) ||
+		(i - 1 == kingPos[0] && j - 2 == kingPos[1])) {
+		return false;
+	}
+	
+	return true;
+}
+
+//see if check caused by elephant
+bool checkElephant(chessPiece tempStorage[8][8], int i, int j) {
+	int eleDir[4][2] = { { 1,0 },{ 0,1 },{ -1,0 },{ 0,-1 } };
+	for (int a = 0; a < 4; a++) {
+		for (int b = 1; b < 8; b++) {
+			//if reach end of matrix then break
+			if (i + b*eleDir[a][0] == 8 || j + b*eleDir[a][1] == 8) { break; }
+
+			//if land on a non number break opr if 1 then false
+			if (tempStorage[i + b*eleDir[a][0]][j + b*eleDir[a][1]].num != 0) {
+				if (tempStorage[i + b*eleDir[a][0]][j + b*eleDir[a][1]].num == 1 &&
+					tempStorage[i + b*eleDir[a][0]][j + b*eleDir[a][1]].colour == turnColour) {
+
+					return false;
+				}
+				else break;
+			}
+		}
+	}
+	return true;
+}
+
+//find friendlyKingPos
+//assign array sent, with the pararmterts
+void friendlyKingPos(chessPiece tempStorage[8][8],int kingPos[2]) {
+	int i, j = 0;
+
+	for (i = 0; i < 8; i++) {
+		for (j = 0; j < 8; j++) {
+			if (tempStorage[i][j].num == 1 && tempStorage[i][j].colour == turnColour) {
+
+				break;
+			}
+		}
+		if (tempStorage[i][j].num == 1 && tempStorage[i][j].colour == turnColour) {
+			kingPos[0] = i;   //y pos
+			kingPos[1] = j;	  //x pos
+			break;
+		}
+	}
+}
+
 
 //assign arrya 0,1 the coordinates of the rectanged
 //assigns a,b the tile number
@@ -535,4 +807,40 @@ bool getTilePressed(int x, int y) {
 	else {
 		return true;
 	}
+}
+
+//get coordinates and index of hovering tile
+coordHolder getTileHover(int x, int y) {
+	coordHolder empty = { 0,0,0,0 };
+	bool tileHover = getTilePressed(x, y);
+	if (!tileHover) {
+		return (empty);
+	}
+	else {
+		return(squareClickedCoords);
+	}
+}
+
+void squareHoverResp(HDC hdc) {
+	//if same square unhighlight it 
+	//if ((matrixSquareClicked[(squareClickedCoords[2])][squareClickedCoords[3]]) == 1) {
+	//	//CHECK IF ANOTHER SQUARE HAS BEEN CLICKED IF YES
+	//	drawRectangle(hdc, squareClickedCoords[0], squareClickedCoords[1], squareClickedCoords[0] + widthSquare, squareClickedCoords[1] + widthSquare,
+	//		matrixBackground[squareClickedCoords[2]][squareClickedCoords[3]], NULL);
+
+
+	//	matrixSquareClicked[squareClickedCoords[2]][squareClickedCoords[3]] = 0;
+	//}
+	//else {
+	//	//check if square even needs ot be highlighted
+	//	//RULE 1 : NO MORE THAN ONE SQUARE CAN BE CLICKED
+	//	//RULE 2 : SQUARE THAT IS CLICKED MUST HAV ESOMETHING IN IT
+	//	//RULE 3 : SQUARE CLICKED THIRD TIME MUST NOT HAVE ANYTHING IN IT
+	//	//goto brokeSquareHighlightRule;
+	//	//higlight rec
+		drawRectangle(hdc, squareClickedCoords.actualX, squareClickedCoords.actualY, squareClickedCoords.actualX+ widthSquare, squareClickedCoords.actualY + widthSquare,
+			CreateSolidBrush(RGB(150, 230, 150)), NULL);
+
+	//	matrixSquareClicked[squareClickedCoords[2]][squareClickedCoords[3]] = 1;
+	//}
 }
