@@ -15,13 +15,27 @@
 #define homeColour 'w'     //b = black w = white
 #define tileHighlightColour CreateSolidBrush(RGB(113, 183, 113))
 
+//colour for the individual pieces
+#define darkColour CreateSolidBrush(RGB(0, 0, 0)) 
+#define lightColour CreateSolidBrush(RGB(255, 255, 255))
+#define RED	CreateSolidBrush(RGB(150, 10, 10))
+#define ORANGE CreateSolidBrush(RGB(255, 178, 102))
+#define TILECOLOURONE COLOR_MENUTEXT
+#define TILECOLOURTWO COLOR_INFOTEXT
+
 //piece variables
-#define KING 6
-#define QUEEN 5
+#define KING 1
+#define QUEEN 2
 #define ROOKH 3
 #define HORSE 4
-#define ELEPHANT 2
+#define ELEPHANT 5
 #define MINION 6
+#define EMPTY 0
+
+
+//postion for chesspiece postions
+#define xPosition 0
+#define yPosition 1
 
 class SQUARETILE {
 
@@ -53,16 +67,13 @@ typedef struct chessPiece {
 //FUNCTION PROTTYPES
 void frontPageDraw(HWND hWnd);
 void gamePageDraw(HWND hWnd, HDC hdc);
-void drawRectangle(HDC hdc, int left, int top, int right, int bottom, HBRUSH back, HBRUSH frame);
-void printPieces(HDC hdc, SQUARETILE matrixSquareTile[8][8], chessPiece matrixRec[8][8]);
-
+void drawRectangle(HDC hdc, int posX, int posY, HBRUSH back, HBRUSH frame);
+void drawSmallRectangle(HDC hdc, int left, int top, int right, int bottom, HBRUSH back, HBRUSH frame);
 bool getTilePressed(int x, int y );
-coordHolder getTileHover(int x, int y);
-
-
-
+//coordHolder getTileHover(int x, int y);
 
 void squareClickResponse(HDC hdc);
-void squareHoverResp(HDC hdc);
+//void squareHoverResp(HDC hdc);
+
 
 #endif

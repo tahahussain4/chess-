@@ -227,10 +227,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}		
 
 		//SQUARE HOVER---------------------------------------------
-		if (squareHoverResponse == true) {
-			squareHoverResp(hdc);
-			squareHoverResponse = false;
-		}
+		//if (squareHoverResponse == true) {
+		//	squareHoverResp(hdc);
+		//	squareHoverResponse = false;
+		//}
 
 
 		//AI processes its things and calls invalidate rect
