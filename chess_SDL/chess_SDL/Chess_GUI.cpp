@@ -2,9 +2,9 @@
 #include "stdafx.h"
 #include "chess_GUI.h"
 #include "math.h"
-
+//===================================================FUCNTION POTOTYPES===============================
 //FUNCTION prototyprd
-bool checkMovementRules(coordHolder current, coordHolder previous, int pieceNumint, chessPiece matrixRec[8][8]);
+bool checkMovementRules(coordHolder current, coordHolder previous, int pieceNumint);
 bool rulesKingCheck(float diffX, float diffY);
 bool rulesQueenCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY);
 bool rulesRookhCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY);
@@ -13,6 +13,7 @@ bool rulesElephantCheck(float diffX, float diffY, int directionX, int directionY
 bool rulesMinionCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY, int goingToY, int goingToX);
 bool pathCheck(float diffX, float diffY, int directionX, int directionY, int tempX, int tempY, chessPiece matrixRec[8][8]);
 
+//detect for check situation
 bool checkDetect(coordHolder goingTo, coordHolder comingFrom);
 void friendlyKingPos(chessPiece tempStorage[8][8], int kingPos[2]);
 bool checkKing(int i, int j, int kingPos[2]);
@@ -20,11 +21,23 @@ bool checkQueen(chessPiece tempStorage[8][8], int i, int j);
 bool checkRookh(chessPiece tempStorage[8][8], int i, int j);
 bool checkHorse(int i, int j, int kingPos[2]);
 bool checkElephant(chessPiece tempStorage[8][8], int i, int j);
+bool checkMinion(int i, int j, int kingPos[2], char colour);
+bool pathExplorer(chessPiece tempStorage[8][8], int arrayDir[8][2], int xPos, int yPos);
 
+//click relkated functions
 void twiceSameClickedSequence(HDC hdc, int XIndex, int YIndex);
 void onceClickedSequence(HDC hdc, int XIndex, int YIndex);
 void twiceDifferentClickedSequence(HDC hdc, int XIndex, int YIndex, int pXIndex, int pYIndex);
 
+//printing on display funcitons
+void printTextDrawRect(HDC hdc, int xPos, int yPos, LPSTR str[6], int piece);
+void printPieces(HDC hdc, SQUARETILE matrixSquareTile[8][8]);
+
+//higlight moves
+int possibleMovesHiglight(HDC hdc);
+int possibleMovesUNHiglight(HDC hdc, coordHolder coordsFromUnhighlight);
+void pathExplorerPossibleMoves(HDC hdc, chessPiece matrixPieces[8][8], int arrayDir[8][2], int xPos, int yPos);
+void pathExplorerPossibleMovesUnhighlight(HDC hdc, chessPiece matrixPieces[8][8], int arrayDir[8][2], int xPos, int yPos);
 
 //GLOBAL variables Front page
 HWND				hwndButton, hwndButton2;
@@ -37,6 +50,7 @@ SQUARETILE			matrixSquareTile[8][8];   //to store the properties of each tile
 bool				twoPlayers = true;
 char				turnColour = 'w';       //starts out with white
 
+//===========================DRAW FUCNTIONS=============================
 
 //initalize intial chessp piece positions in  matrix
 void piecesInit() {
@@ -52,13 +66,12 @@ void piecesInit() {
 		colour[0] = 'b';
 
 		colour[1] = 'w';
-
 	}
 
 
 	chessPiece empty;
 	chessPiece elephantA, horseA, minionA, rookhA, queenA, kingA,
-		elephantH, horseH, minionH, rookhH, queenH, kingH;
+			   elephantH, horseH, minionH, rookhH, queenH, kingH;
 
 	//fill allw ith empty
 	empty.num = 1;
@@ -70,45 +83,48 @@ void piecesInit() {
 
 	//AWAY--------
 	//minions
-	minionA.num = 6; minionA.colour = colour[0];
+	minionA.num = MINION; minionA.colour = colour[0];
+
 	//elephant
-	elephantA.num = 5; elephantA.colour = colour[0];
+	elephantA.num = ELEPHANT; elephantA.colour = colour[0];
 
 	//horse
-	horseA.num = 4; horseA.colour = colour[0];
+	horseA.num = HORSE; horseA.colour = colour[0];
 
 	//rookh
-	rookhA.num = 3; rookhA.colour = colour[0];
+	rookhA.num = ROOKH; rookhA.colour = colour[0];
 
 	//queen
-	queenA.num = 2; queenA.colour = colour[0];
+	queenA.num = QUEEN; queenA.colour = colour[0];
 
 	//king
-	kingA.num = 1; kingA.colour = colour[0];
+	kingA.num = KING; kingA.colour = colour[0];
 
 	//HOME---------
 
 	//minions
-	minionH.num = 6; minionH.colour = colour[1];
+	minionH.num = MINION; minionH.colour = colour[1];
+
 	//elephHnt
-	elephantH.num = 5; elephantH.colour = colour[1];
+	elephantH.num = ELEPHANT; elephantH.colour = colour[1];
 
 	//horse
-	horseH.num = 4; horseH.colour = colour[1];
+	horseH.num = HORSE; horseH.colour = colour[1];
 
 	//rookh
-	rookhH.num = 3; rookhH.colour = colour[1];
+	rookhH.num = ROOKH; rookhH.colour = colour[1];
 
 	//queen
-	queenH.num = 2; queenH.colour = colour[1];
+	queenH.num = QUEEN; queenH.colour = colour[1];
 
 	//king
-	kingH.num = 1; kingH.colour = colour[1];
+	kingH.num = KING; kingH.colour = colour[1];
 
 	//fill array HOME and AWAY -------------
-	for (int i = 0; i < 8; i++) {
-		matrixPieces[1][i] = minionA;
-		matrixPieces[6][i] = minionH;
+	//minion
+	for (int xPos = 0; xPos < 8; xPos++) {
+		matrixPieces[1][xPos] = minionA;
+		matrixPieces[6][xPos] = minionH;
 	}
 	//elephant
 	matrixPieces[0][0] = elephantA; matrixPieces[0][7] = elephantA;
@@ -119,7 +135,9 @@ void piecesInit() {
 	//rookh
 	matrixPieces[0][2] = rookhA; matrixPieces[0][5] = rookhA;
 	matrixPieces[7][2] = rookhH; matrixPieces[7][5] = rookhH;
-	//queen 
+	
+	//queen and king
+	//they are arranged differently based on which side black and whites are
 	if (colour[0] == 'b') {
 		matrixPieces[0][4] = queenA;
 		matrixPieces[0][3] = kingA;
@@ -134,8 +152,6 @@ void piecesInit() {
 		matrixPieces[7][3] = queenH;
 		matrixPieces[7][4] = kingH;
 	}
-	//king
-	//matrixPieces[0][0] = elephantA; 
 }
 
 //draw the front page of the program
@@ -164,10 +180,10 @@ void frontPageDraw(HWND hWnd) {
 void gamePageDraw(HWND hWnd, HDC hdc ) {
 
 	//Create exit buttons
-	int spx_i = WINDOW_W / 50.0;
-	int spy_i = WINDOW_L / 50.0;
-	int spx = spx_i;   //starting x point 
-	int spy = spy_i / 50.0;	// staring y point
+	int spx_initial = WINDOW_W / 50.0;
+	int spy_initital = WINDOW_L / 50.0;
+	int spx = spx_initial;   //starting x point 
+	int spy = spy_initital / 50.0;	// staring y point
 	RECT recColour;    //object used for colouring rectangles
 
 	
@@ -185,91 +201,110 @@ void gamePageDraw(HWND hWnd, HDC hdc ) {
 		NULL);      // Pointer not needed.
 
 	//Draw board once
-	int colour[2] = { COLOR_MENUTEXT , COLOR_INFOTEXT };   //dark , light
-	for (int i = 0; i < 8; i++) {
-		for (int y = 0; y < 8; y++) {
+	int colour[2] = { TILECOLOURONE , TILECOLOURTWO };   //dark , light
+	for (int yPos = 0; yPos < 8; yPos++) {
+		for (int xPos = 0; xPos < 8; xPos++) {
 			Rectangle(hdc, spx, spy, (int)(spx + widthSquare), (int)(spy + widthSquare));
 			recColour.left = spx;
 			recColour.top = spy;
 			recColour.right = (int)(spx + widthSquare);
 			recColour.bottom = (int)(spy + widthSquare);
-			FillRect(hdc, &recColour, (HBRUSH)colour[(i + y) % 2]);
+			FillRect(hdc, &recColour, (HBRUSH)colour[(yPos + xPos) % 2]);
 			FrameRect(hdc, &recColour, (HBRUSH)COLOR_BACKGROUND);
 
-			matrixSquareTile[i][y].coord[0] = (int)spx;
-			matrixSquareTile[i][y].coord[1] = (int)spy;
-			matrixSquareTile[i][y].background = (HBRUSH)colour[(i + y) % 2];
+			matrixSquareTile[yPos][xPos].coord[0] = (int)spx;
+			matrixSquareTile[yPos][xPos].coord[1] = (int)spy;
+			matrixSquareTile[yPos][xPos].background = (HBRUSH)colour[(yPos + xPos) % 2];
 
 			spx = spx + widthSquare;
 		}
 		spy = spy + widthSquare;
-		spx = spx_i;
+		spx = spx_initial;
 	}
 
 	//print all the pieces
-	printPieces(hdc, matrixSquareTile, matrixPieces);
+	printPieces(hdc, matrixSquareTile);
 }
 
 //draw all pieces
 //6-minions  1 - King 2- QUEeen 3 - BISHOP 4-DONKEY 5-ELEPHANT - REST ARE ZERO
-void printPieces(HDC hdc, SQUARETILE matrixSquareTile[8][8], chessPiece matrixRec[8][8]) {
+void printPieces(HDC hdc, SQUARETILE matrixSquareTile[8][8]) {
 	LPSTR str[6] = { "1","2","3","4","5","6" };
 	LPSTR str1;
-	for (int i = 0; i < 8; i++) {
-		for (int y = 0; y < 8; y++) {
-			switch (matrixRec[i][y].num) {
-			case 1:
-				TextOutA(hdc, matrixSquareTile[i][y].coord[0] + widthSquare / 2.0, matrixSquareTile[i][y].coord[1] + widthSquare / 2.0, str[0], strlen(str[0])); 
-				if (matrixRec[i][y].colour == 'b')
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(0, 0, 0)), NULL);
-				else
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(200, 200, 200)), NULL);
+	for (int yPos = 0; yPos < 8; yPos++) {
+		for (int xPos = 0; xPos < 8; xPos++) {
+			switch (matrixPieces[yPos][xPos].num) {
+			case KING:
+				printTextDrawRect(hdc, xPos, yPos, str, KING);
 				break;
-			case 2:
-				TextOutA(hdc, matrixSquareTile[i][y].coord[0] + widthSquare / 2.0, matrixSquareTile[i][y].coord[1] + widthSquare / 2.0, str[1], strlen(str[1]));
-				if (matrixRec[i][y].colour == 'b')
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(0, 0, 0)), NULL);
-				else
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(200, 200, 200)), NULL);
+			case QUEEN:
+				printTextDrawRect(hdc, xPos, yPos, str, QUEEN);
 				break;
-			case 3:
-				TextOutA(hdc, matrixSquareTile[i][y].coord[0] + widthSquare / 2.0, matrixSquareTile[i][y].coord[1] + widthSquare / 2.0, str[2], strlen(str[2]));
-				if (matrixRec[i][y].colour == 'b')
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(0, 0, 0)), NULL);
-				else
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(200, 200, 200)), NULL);
+			case ROOKH:
+				printTextDrawRect(hdc, xPos, yPos, str, ROOKH);
 				break;
-			case 4:
-				TextOutA(hdc, matrixSquareTile[i][y].coord[0] + widthSquare / 2.0, matrixSquareTile[i][y].coord[1] + widthSquare / 2.0, str[3], strlen(str[3]));
-				if (matrixRec[i][y].colour == 'b')
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(0, 0, 0)), NULL);
-				else
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(200, 200, 200)), NULL);
+			case HORSE:
+				printTextDrawRect(hdc, xPos, yPos, str, HORSE);
 				break;
-			case 5:
-				TextOutA(hdc, matrixSquareTile[i][y].coord[0] + widthSquare / 2.0, matrixSquareTile[i][y].coord[1] + widthSquare / 2.0, str[4], strlen(str[4]));
-				if (matrixRec[i][y].colour == 'b')
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(0, 0, 0)), NULL);
-				else
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(200, 200, 200)), NULL);
+			case ELEPHANT:
+				printTextDrawRect(hdc, xPos, yPos, str, ELEPHANT);
 				break;
-			case 6:
-				TextOutA(hdc, matrixSquareTile[i][y].coord[0] + widthSquare / 2.0, matrixSquareTile[i][y].coord[1] + widthSquare / 2.0, str[5], strlen(str[5]));
-				if (matrixRec[i][y].colour == 'b')
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(0, 0, 0)), NULL);
-				else
-					drawRectangle(hdc, matrixSquareTile[i][y].coord[0], matrixSquareTile[i][y].coord[1], matrixSquareTile[i][y].coord[0] + 20, matrixSquareTile[i][y].coord[1] + 20, CreateSolidBrush(RGB(200, 200, 200)), NULL);
+			case MINION:
+				printTextDrawRect(hdc, xPos, yPos, str, MINION);
 				break;
 			}
 		}
 	}
 }
 
-//BREIF :Draws A rectanlge based on the COORDINATES , BACKGROUND and FRAME
-void drawRectangle(HDC hdc,int left,int top,int right,int bottom,HBRUSH back, HBRUSH frame  ) {
+//print texts in the centre of tile and draws wither a black or white colour
+void printTextDrawRect(HDC hdc, int xPos,int yPos ,LPSTR str[6], int piece) {
+	TextOutA(hdc, matrixSquareTile[yPos][xPos].coord[0] + widthSquare / 2.0, matrixSquareTile[yPos][xPos].coord[1] + widthSquare / 2.0, str[piece-1], strlen(str[piece-1]));
+	if (matrixPieces[yPos][xPos].colour == 'b')
+		drawSmallRectangle(hdc, matrixSquareTile[yPos][xPos].coord[0],
+								matrixSquareTile[yPos][xPos].coord[1], 
+								matrixSquareTile[yPos][xPos].coord[0] + (int)widthSquare /4.0,
+								matrixSquareTile[yPos][xPos].coord[1] + (int)widthSquare / 4.0,
+								darkColour,  NULL);
+	else
+		drawSmallRectangle(hdc, matrixSquareTile[yPos][xPos].coord[0],
+			matrixSquareTile[yPos][xPos].coord[1],
+			matrixSquareTile[yPos][xPos].coord[0] + (int)widthSquare / 4.0,
+			matrixSquareTile[yPos][xPos].coord[1] + (int)widthSquare / 4.0,
+			lightColour, NULL);
+}
+
+//BREIF :Draws A rectanlge based on the COORDINATES , BACKGROUND and FRAME. 
+//Can only draw the checkboard dsquare rectangles
+void drawRectangle(HDC hdc,int posX,int posY, HBRUSH back, HBRUSH frame  ) {
 	RECT recColour;
 
-	Rectangle(hdc, left, top, right, bottom);
+	Rectangle(hdc, matrixSquareTile[posY][posX].coord[0],
+		matrixSquareTile[posY][posX].coord[1], 
+		matrixSquareTile[posY][posX].coord[0] + widthSquare, 
+		matrixSquareTile[posY][posX].coord[1] + widthSquare);
+
+	recColour.left = matrixSquareTile[posY][posX].coord[0];
+	recColour.top = matrixSquareTile[posY][posX].coord[1];
+	recColour.right = matrixSquareTile[posY][posX].coord[0] + widthSquare;
+	recColour.bottom = matrixSquareTile[posY][posX].coord[1] + widthSquare;
+	if (back != NULL) {
+		FillRect(hdc, &recColour, back);
+	}
+
+	if (frame != NULL) {
+		FrameRect(hdc, &recColour, frame);
+	}
+}
+
+void drawSmallRectangle(HDC hdc, int left, int top,int right, int bottom, HBRUSH back, HBRUSH frame) {
+	RECT recColour;
+
+	Rectangle(hdc, left,
+		top,
+		right,
+		bottom);
+
 	recColour.left = left;
 	recColour.top = top;
 	recColour.right = right;
@@ -283,10 +318,7 @@ void drawRectangle(HDC hdc,int left,int top,int right,int bottom,HBRUSH back, HB
 	}
 }
 
-
-
-
-
+//=============================CLCIK FUNCTIONS==============================
 
 //responds when a tile is clicked to decide weather to highlight ,unhighlight or move a piece
 void squareClickResponse(HDC hdc) {
@@ -296,14 +328,16 @@ void squareClickResponse(HDC hdc) {
 	int pXIndex = prevClicked.virtualX;
 	int pYIndex = prevClicked.virtualY;
 
+	//same square clicked teice
 	if (matrixSquareTile[YIndex][XIndex].clicked == true) {
 
 		twiceSameClickedSequence(hdc, XIndex, YIndex);
 	}
-
+	//two different squares cliked
 	else if (clickedOnce == true) {
 		twiceDifferentClickedSequence(hdc, XIndex, YIndex, pXIndex, pYIndex);
 	}
+	//square clicked first time
 	else if (clickedOnce == false)
 	{
 		//check if square even needs ot be highlighted
@@ -314,37 +348,23 @@ void squareClickResponse(HDC hdc) {
 	}
 }
 
-//unlights if it detect it was clicked once already
-void twiceSameClickedSequence(HDC hdc, int XIndex, int YIndex) {
-	drawRectangle(hdc,
-		squareClickedCoords.actualX,
-		squareClickedCoords.actualY,
-		squareClickedCoords.actualX + widthSquare,
-		squareClickedCoords.actualY + widthSquare,
-		matrixSquareTile[YIndex][XIndex].background,
-		NULL);
 
-	matrixSquareTile[YIndex][XIndex].clicked = false;
-	printPieces(hdc, matrixSquareTile, matrixPieces);
-	clickedOnce = false;    //ensures can only click one square at a time
-
-}
 
 //higlight square if data present
 void onceClickedSequence(HDC hdc, int XIndex, int YIndex) {
-	if ((matrixPieces[YIndex][XIndex].num) != 0) {
+	if ((matrixPieces[YIndex][XIndex].num) != EMPTY) {
 		if (matrixPieces[YIndex][XIndex].colour == turnColour){
 			//higlight the rectangle
 			drawRectangle(hdc,
-				squareClickedCoords.actualX,
-				squareClickedCoords.actualY,
-				squareClickedCoords.actualX + widthSquare,
-				squareClickedCoords.actualY + widthSquare,
+				XIndex,
+				YIndex,
 				tileHighlightColour,
 				NULL);
+			//higlight all possible moves
+			possibleMovesHiglight(hdc);
 
 			// print out game display to redisplay characters
-			printPieces(hdc, matrixSquareTile, matrixPieces);
+			printPieces(hdc, matrixSquareTile);
 
 			prevClicked.actualX = squareClickedCoords.actualX;
 			prevClicked.actualY = squareClickedCoords.actualY;
@@ -357,19 +377,37 @@ void onceClickedSequence(HDC hdc, int XIndex, int YIndex) {
 	}
 }
 
+//unlights if it detect it was clicked once already
+void twiceSameClickedSequence(HDC hdc, int XIndex, int YIndex) {
+	drawRectangle(hdc,
+		XIndex,
+		YIndex,
+		matrixSquareTile[YIndex][XIndex].background,
+		NULL);
+
+	//unHiglighLight all moves;
+	possibleMovesUNHiglight(hdc,squareClickedCoords);
+
+	matrixSquareTile[YIndex][XIndex].clicked = false;
+	printPieces(hdc, matrixSquareTile);
+	clickedOnce = false;    //ensures can only click one square at a time
+
+}
+
 //mocves piece to empty or enemy tile if this is the second click not on the same tile
 void twiceDifferentClickedSequence(HDC hdc, int XIndex, int YIndex, int pXIndex, int pYIndex) {
 	//see if the square clicked on is empty or is enemy
-
 	if ((matrixPieces[YIndex][XIndex].num) == 0 || matrixPieces[YIndex][XIndex].colour != matrixPieces[pYIndex][pXIndex].colour) {
 		//rules applied
 		if (checkDetect(squareClickedCoords, prevClicked) && checkMovementRules(
 			squareClickedCoords,
 			prevClicked,
-			matrixPieces[pYIndex][pXIndex].num,
-			matrixPieces)
+			matrixPieces[pYIndex][pXIndex].num)
 			 ){
 			
+			//Unllight possible moves from original position
+			possibleMovesUNHiglight(hdc,prevClicked);
+
 			//make trasition of matrix
 			matrixPieces[YIndex][XIndex] = matrixPieces[pYIndex][pXIndex];
 			matrixPieces[pYIndex][pXIndex].num = 0;
@@ -386,14 +424,12 @@ void twiceDifferentClickedSequence(HDC hdc, int XIndex, int YIndex, int pXIndex,
 			}
 
 			// print out game display to redisplay characters
-			printPieces(hdc, matrixSquareTile, matrixPieces);
+			printPieces(hdc, matrixSquareTile);
 
 			//print out background on empty square and reset clicked matrix
 			drawRectangle(hdc,
-				prevClicked.actualX,
-				prevClicked.actualY,
-				prevClicked.actualX + widthSquare,
-				prevClicked.actualY + widthSquare,
+				pXIndex,
+				pYIndex,
 				matrixSquareTile[pYIndex][pXIndex].background,
 				NULL);
 
@@ -403,51 +439,106 @@ void twiceDifferentClickedSequence(HDC hdc, int XIndex, int YIndex, int pXIndex,
 	}
 }
 
+//assign arrya 0,1 the coordinates of the rectanged
+//assigns a,b the tile number
+//return true if clicked on actual tile
+bool getTilePressed(int x, int y)  {
 
+	//initialized to -1
+	squareClickedCoords.actualX = -1;
+	squareClickedCoords.actualY = -1;
+	squareClickedCoords.virtualX = -1;
+	squareClickedCoords.virtualY = -1;
 
+	//x,y and tile no(x,y)
+	int yPos, xPos;
 
+	//break if not in reigon 
+	//8x8 board
+	if (x > matrixSquareTile[7][7].coord[xPosition] + widthSquare || y >matrixSquareTile[7][7].coord[yPosition] + widthSquare) {
+		return false;
+	}
 
+	//find coords and index of click
+	for (yPos = 0; yPos < 8; yPos++) {
+		for (xPos = 0; xPos < 8; xPos++) {
+			if (x < (matrixSquareTile[yPos][xPos].coord[xPosition] + widthSquare)) {
+				break;
+			}
+		}
+		if (y < (matrixSquareTile[yPos][xPos].coord[yPosition] + widthSquare)) {
+			squareClickedCoords.actualX = matrixSquareTile[yPos][xPos].coord[xPosition];
+			squareClickedCoords.actualY = matrixSquareTile[yPos][xPos].coord[yPosition];
+			break;
+		}
+	}
+	squareClickedCoords.virtualX = xPos;
+	squareClickedCoords.virtualY = yPos;
+
+	if (squareClickedCoords.virtualX == -1) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+//==================================== MOVEMENT RULES FUNCITONs =========================
 
 //BREIF : Check if the movement received thoruhg inputs is accroding to chess rules. 
 //RETURN : TRUE is all rules met else FALSE
-bool checkMovementRules(coordHolder current, coordHolder previous, int pieceNum, chessPiece matrixPieces[8][8]) {
+bool checkMovementRules(coordHolder current, coordHolder previous, int pieceNum) {
 	//NOTE: keep in mind that the piece has not moved yet for the first part of the check
-
+	//NOTE : deos reset atHome flags so should be the LAST CHECK before moving
 	float diffX = current.virtualX - previous.virtualX;
 	float diffY = current.virtualY - previous.virtualY;
 	int comingFromX = previous.virtualX, comingFromY = previous.virtualY;
 	int goingToX = current.virtualX, goingToY = current.virtualY;
-	int directionY = diffY / abs((int)diffY);
-	int directionX = diffX / abs((int)diffX);
+	int directionY, directionX;
+
+	//specifying x,y direction 
+	if (diffY != 0) {
+		directionY = diffY / abs((int)diffY);
+	}
+	else {
+		directionY = 0;
+	}
+
+	if (diffX != 0) {
+		directionX = diffX / abs((int)diffX);
+	}
+	else {
+		directionX = 0;
+	}
 
 	switch (pieceNum) {
 	//KING 
-	case 1:
+	case KING:
 		if (rulesKingCheck(diffX,diffY)) {}
 		else { return false; }
 		break;
 	//QUEEN
-	case 2:
+	case QUEEN:
 		if (rulesQueenCheck(diffX,  diffY,  directionX,  directionY,  comingFromX,  comingFromY)) {}
 		else { return false; }
 		break;
 	//ROOKH
-	case 3:
+	case ROOKH:
 		if (rulesRookhCheck( diffX,  diffY,  directionX,  directionY,  comingFromX,  comingFromY)) {}
 		else { return false; }
 		break;
 	//horse
-	case 4:
+	case HORSE:
 		if (rulesHorseCheck( diffX,  diffY)) {}
 		else { return false; }
 		break;
 	//elephant
-	case 5:
+	case ELEPHANT:
 		if (rulesElephantCheck( diffX,  diffY,  directionX,  directionY,  comingFromX,  comingFromY)) {}
 		else { return false; }
 		break;
 	//Minion
-	case 6:
+	case MINION:
 		if (rulesMinionCheck( diffX,  diffY,  directionX,  directionY,  comingFromX,  comingFromY,  goingToY,  goingToX)) {}
 		else { return false; }
 		break;
@@ -470,6 +561,7 @@ bool rulesKingCheck(float diffX, float diffY) {
 //see if queen movement obeys the movement rules
 bool rulesQueenCheck(float diffX, float diffY,int directionX, int directionY, int comingFromX, int comingFromY) {
 	//case one
+
 	if (diffY == 0 || diffX == 0 || diffX == diffY || diffX == -diffY) {
 		//find out if something in the way
 		if (!pathCheck(diffX, diffY, directionX, directionY, comingFromX, comingFromY, matrixPieces)) { return false; };
@@ -504,7 +596,9 @@ bool rulesHorseCheck(float diffX, float diffY) {
 
 //see if elephant movement obeys the movement rules
 bool rulesElephantCheck(float diffX, float diffY, int directionX, int directionY, int comingFromX, int comingFromY) {
+	
 	if (diffX == 0.0 || diffY == 0) {
+
 		//find out if something in way
 		if (!pathCheck(diffX, diffY, directionX, directionY, comingFromX, comingFromY, matrixPieces)) { return false; };
 	} 		//
@@ -524,33 +618,38 @@ bool rulesMinionCheck(float diffX, float diffY, int directionX, int directionY, 
 	//5 when cutting siudeways make sure somethign is there
 
 	if (matrixPieces[comingFromY][comingFromX].colour == homeColour) {
-		if (diffY == -1 && diffX == 0 && matrixPieces[goingToY][goingToX].num == 0) {}
-		else if (diffY == -2 && diffX == 0 && matrixPieces[comingFromY][comingFromX].atHome == true && matrixPieces[goingToY][goingToX].num == 0) {}
-		else if (diffY == -1 &&
-			(abs((int)diffX) == 1) &&
-			matrixPieces[goingToY][goingToX].num != 0) {  //cut another piece
+		if (diffY == -1 && diffX == 0 && matrixPieces[goingToY][goingToX].num == EMPTY) {
+			matrixPieces[comingFromY][comingFromX].atHome = false;
+		}
+		else if (diffY == -2 && diffX == 0 && matrixPieces[comingFromY][comingFromX].atHome == true && matrixPieces[goingToY][goingToX].num == EMPTY) {
+			matrixPieces[comingFromY][comingFromX].atHome = false;
+		}
+		else if (diffY == -1 && (abs((int)diffX) == 1) && matrixPieces[goingToY][goingToX].num != EMPTY) {  //cut another piece
+			matrixPieces[comingFromY][comingFromX].atHome = false;
 		}
 		else { return false; }
 	}
 	else {
-		if (diffY == 1 && diffX == 0 && matrixPieces[goingToY][goingToX].num == 0) {}   //move strright
-		else if (diffY == 2 && diffX == 0 && matrixPieces[comingFromY][comingFromX].atHome == true && matrixPieces[goingToY][goingToX].num == 0) {}  //move tow spaces
-		else if (diffY == 1 &&
-			abs((int)diffX) == 1 &&
-			matrixPieces[goingToY][goingToX].num != 0) {  //cut another piece
+		if (diffY == 1 && diffX == 0 && matrixPieces[goingToY][goingToX].num == EMPTY) {
+			matrixPieces[comingFromY][comingFromX].atHome = false;
+		}   
+		else if (diffY == 2 && diffX == 0 && matrixPieces[comingFromY][comingFromX].atHome == true && matrixPieces[goingToY][goingToX].num == EMPTY) {
+			matrixPieces[comingFromY][comingFromX].atHome = false;
+		}  
+		else if (diffY == 1 && abs((int)diffX) == 1 && matrixPieces[goingToY][goingToX].num != EMPTY) {  //cut another piece
+			matrixPieces[comingFromY][comingFromX].atHome = false;
 		}
 		else { return false; };
 	}
-	matrixPieces[comingFromY][comingFromX].atHome = false;
-
 	return true;
 }
 
 //BRIEF :check the path for obstructions based on the coordinates recieved
 //For ELEPHANT, ROOKH, QUEEN
 bool pathCheck(float diffX, float diffY, int directionX, int directionY, int tempX, int tempY, chessPiece matrixRec[8][8]) {
-	for (int i = 0; i < abs((int)diffY) - 1; i++) {
-		if (matrixRec[tempY + directionY][tempX + directionX].num != 0) {
+	
+	for (int i = 0; i < max(abs((int)diffX), abs((int)diffY)) - 1; i++) {
+		if (matrixRec[tempY + directionY][tempX + directionX].num != EMPTY) {
 			return false;
 		}
 		tempY = tempY + directionY;
@@ -559,11 +658,7 @@ bool pathCheck(float diffX, float diffY, int directionX, int directionY, int tem
 	return true;
 }
 
-
-
-
-
-
+//===================================CHECK SITUATIONS FUNCTIONS =============================
 
 //detects if move will lead to a check postion which has been present or made due to move
 bool checkDetect(coordHolder goingTo, coordHolder comingFrom) {
@@ -597,41 +692,43 @@ bool checkDetect(coordHolder goingTo, coordHolder comingFrom) {
 	friendlyKingPos(tempStorage, kingPos);
 
 	//find enemies in new matrix and check path for overlay with king
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
+	for (int yPos = 0; yPos < 8; yPos++) {
+		for (int xPos = 0; xPos < 8; xPos++) {
 			//not friendly colour and is not empty
-			if (tempStorage[i][j].colour != turnColour && tempStorage[i][j].num != 0) {
+			if (tempStorage[yPos][xPos].colour != turnColour && tempStorage[yPos][xPos].num != EMPTY) {
 
-				switch (tempStorage[i][j].num) {
+				switch (tempStorage[yPos][xPos].num) {
 				//KING
-				case 1:
-					if(checkKing(i,j,kingPos)){}
+				case KING:
+					if(checkKing(yPos,xPos,kingPos)){}
 					else { return false; }
 					break;
 				//QUEEN
-				case 2:
-					if (checkQueen(tempStorage, i, j)) {}
+				case QUEEN:
+					if (checkQueen(tempStorage, yPos, xPos)) {}
 					else { return false; }
 					break;
 				//ROOKH
-				case 3:
-					if (checkRookh(tempStorage, i, j)) {}
+				case ROOKH:
+					if (checkRookh(tempStorage, yPos, xPos)) {}
 					else { return false; }
 					break;
 
 				//HORSE
-				case 4:
-					if (checkHorse(i, j, kingPos)) {}
+				case HORSE:
+					if (checkHorse(yPos, xPos, kingPos)) {}
 					else { return false; }
 					break;
 				//ELEPHANT
-				case 5:
+				case ELEPHANT:
 					//go through the  paths
-					if (checkElephant(tempStorage, i, j)) {}
+					if (checkElephant(tempStorage, yPos, xPos)) {}
 					else { return false; }
 					break;
 				//MINION
-				case 6:
+				case MINION:
+					if (checkMinion(yPos, xPos, kingPos, tempStorage[yPos][xPos].colour)) {}
+					else { return false; }
 					break;
 
 				}
@@ -642,15 +739,15 @@ bool checkDetect(coordHolder goingTo, coordHolder comingFrom) {
 }
 
 //see if check can be caused by king
-bool checkKing(int i,int j ,int kingPos[2]) {
-	if ((i + 1 == kingPos[0] && j + 0 == kingPos[1]) ||
-		(i + 1 == kingPos[0] && j + 1 == kingPos[1]) ||
-		(i + 1 == kingPos[0] && j - 1 == kingPos[1]) ||
-		(i - 1 == kingPos[0] && j + 0 == kingPos[1]) ||
-		(i - 1 == kingPos[0] && j + 1 == kingPos[1]) ||
-		(i - 1 == kingPos[0] && j - 1 == kingPos[1]) ||
-		(i + 0 == kingPos[0] && j + 1 == kingPos[1]) ||
-		(i + 0 == kingPos[0] && j - 1 == kingPos[1])) {
+bool checkKing(int yPos,int xPos ,int kingPos[2]) {
+	if ((yPos + 1 == kingPos[0] && xPos + 0 == kingPos[1]) ||
+		(yPos + 1 == kingPos[0] && xPos + 1 == kingPos[1]) ||
+		(yPos + 1 == kingPos[0] && xPos - 1 == kingPos[1]) ||
+		(yPos - 1 == kingPos[0] && xPos + 0 == kingPos[1]) ||
+		(yPos - 1 == kingPos[0] && xPos + 1 == kingPos[1]) ||
+		(yPos - 1 == kingPos[0] && xPos - 1 == kingPos[1]) ||
+		(yPos + 0 == kingPos[0] && xPos + 1 == kingPos[1]) ||
+		(yPos + 0 == kingPos[0] && xPos - 1 == kingPos[1])) {
 
 		return false;
 	}
@@ -659,55 +756,15 @@ bool checkKing(int i,int j ,int kingPos[2]) {
 }
 
 //see if check can be caused by queen
-bool checkQueen(chessPiece tempStorage[8][8],int i, int j) {
+bool checkQueen(chessPiece tempStorage[8][8], int yPos, int xPos) {
 	int queenDir[8][2] = { { 1,0 },{ 0,1 },{ -1,0 },{ 0,-1 },{ 1,1 },{ -1,-1 },{ -1,1 },{ 1,-1 } };
-	for (int a = 0; a < 8; a++) {
-		for (int b = 1; b < 8; b++) {
-			//if reach end of matrix then break
-			if (i + b*queenDir[a][0] == 8 || j + b*queenDir[a][1] == 8
-				|| i + b*queenDir[a][0] == 0 || j + b*queenDir[a][1] == 0) {
-				break;
-			}
-
-			//if land on a non number break 
-			//if KING(1) of opposite team then false
-			if (tempStorage[i + b*queenDir[a][0]][j + b*queenDir[a][1]].num != 0) {
-				if (tempStorage[i + b*queenDir[a][0]][j + b*queenDir[a][1]].num == 1 &&
-					tempStorage[i + b*queenDir[a][0]][j + b*queenDir[a][1]].colour == turnColour) {
-
-					return false;
-				}
-				else break;
-			}
-		}
-	}
-	return true;
+	return(pathExplorer(tempStorage, queenDir, xPos,yPos));
 }
 
 //see if check casued by rookh
-bool checkRookh(chessPiece tempStorage[8][8], int i, int j) {
-	int rookDir[4][2] = { { 1,1 },{ -1,-1 },{ -1,1 },{ 1,-1 } };
-	for (int a = 0; a < 4; a++) {
-		for (int b = 1; b < 8; b++) {
-			//if reach end of matrix then break
-			if (i + b*rookDir[a][0] == 8 || j + b*rookDir[a][1] == 8
-				|| i + b*rookDir[a][0] == 0 || j + b*rookDir[a][1] == 0) {
-				break;
-			}
-
-			//if land on a non number break 
-			//if KING(1) of opposite team then false
-			if (tempStorage[i + b*rookDir[a][0]][j + b*rookDir[a][1]].num != 0) {
-				if (tempStorage[i + b*rookDir[a][0]][j + b*rookDir[a][1]].num == 1 &&
-					tempStorage[i + b*rookDir[a][0]][j + b*rookDir[a][1]].colour == turnColour) {
-
-					return false;
-				}
-				else break;
-			}
-		}
-	}
-	return true;
+bool checkRookh(chessPiece tempStorage[8][8], int yPos, int xPos) {
+	int rookhDir[4][2] = { { 1,1 },{ -1,-1 },{ -1,1 },{ 1,-1 } };
+	return(pathExplorer(tempStorage, rookhDir, xPos, yPos));
 }
 
 //see if check caused by horse
@@ -727,17 +784,51 @@ bool checkHorse(int i, int j, int kingPos[2]) {
 }
 
 //see if check caused by elephant
-bool checkElephant(chessPiece tempStorage[8][8], int i, int j) {
+bool checkElephant(chessPiece tempStorage[8][8], int yPos, int xPos) {
 	int eleDir[4][2] = { { 1,0 },{ 0,1 },{ -1,0 },{ 0,-1 } };
-	for (int a = 0; a < 4; a++) {
-		for (int b = 1; b < 8; b++) {
-			//if reach end of matrix then break
-			if (i + b*eleDir[a][0] == 8 || j + b*eleDir[a][1] == 8) { break; }
+	return(pathExplorer(tempStorage, eleDir, xPos, yPos));
+}
 
-			//if land on a non number break opr if 1 then false
-			if (tempStorage[i + b*eleDir[a][0]][j + b*eleDir[a][1]].num != 0) {
-				if (tempStorage[i + b*eleDir[a][0]][j + b*eleDir[a][1]].num == 1 &&
-					tempStorage[i + b*eleDir[a][0]][j + b*eleDir[a][1]].colour == turnColour) {
+//see if check caused by Minion
+bool checkMinion(int i, int j, int kingPos[2],char colour) {
+	if  (colour ==homeColour &&
+		((i - 1 == kingPos[0] && j + 1 == kingPos[1]) || (i - 1 == kingPos[0] && j -1 == kingPos[1])) ) {
+
+		return false;
+	}
+	else if (colour != homeColour &&
+		((i + 1 == kingPos[0] && j + 1 == kingPos[1]) || (i + 1 == kingPos[0] && j - 1 == kingPos[1]))) {
+		return false;
+	}
+	return true;
+}
+
+//going over all path to check for CEHCK conditions
+bool pathExplorer(chessPiece tempStorage[8][8] , int arrayDir[8][2], int xPos, int yPos) {
+
+	int yDir = 0, xDir = 1;
+	int arraySize = 0;
+	if (tempStorage[yPos][xPos].num == QUEEN) {
+		arraySize = 8;
+	}
+	else {
+		arraySize = 4;
+	}
+
+	for (int path = 0; path < arraySize; path++) {
+		for (int b = 1; b < 8; b++) {  //excluede itself so no 0
+
+			 //if reach end of matrix then break
+			if (yPos + b*arrayDir[path][yDir] == 8 || xPos + b*arrayDir[path][xDir] == 8
+				|| yPos + b*arrayDir[path][yDir] == -1 || xPos + b*arrayDir[path][xDir] == -1) {
+				break;
+			}
+
+			//if land on a non number break 
+			//if KING(1) of opposite team then false
+			if (tempStorage[yPos + b*arrayDir[path][yDir]][xPos + b*arrayDir[path][xDir]].num != EMPTY) {
+				if (tempStorage[yPos + b*arrayDir[path][yDir]] [xPos + b*arrayDir[path][xDir]].num == KING &&
+					tempStorage[yPos + b*arrayDir[path][yDir]] [xPos + b*arrayDir[path][xDir]].colour == turnColour) {
 
 					return false;
 				}
@@ -767,80 +858,440 @@ void friendlyKingPos(chessPiece tempStorage[8][8],int kingPos[2]) {
 		}
 	}
 }
+// =====================================HIGLIGHT POSSIBLE MOVES ===================================
+//higlighting possible moves
+int possibleMovesHiglight(HDC hdc) {
+	int xPos = squareClickedCoords.virtualX;
+	int yPos = squareClickedCoords.virtualY;
+	int kingArray[8][2] =
+	{ {yPos + 1, xPos + 0},
+	{yPos + 1, xPos + 1},
+	{yPos + 1, xPos - 1},
+	{yPos - 1, xPos + 0},
+	{yPos - 1, xPos + 1},
+	{yPos - 1, xPos - 1},
+	{yPos + 0, xPos + 1},
+	{yPos + 0, xPos - 1} };
+			
+	int queenDir[8][2] = { { 1,0 },{ 0,1 },{ -1,0 },{ 0,-1 },{ 1,1 },{ -1,-1 },{ -1,1 },{ 1,-1 } };
+	int rookhDir[4][2] = { { 1,1 },{ -1,-1 },{ -1,1 },{ 1,-1 } };
+	int eleDir[4][2] = { { 1,0 },{ 0,1 },{ -1,0 },{ 0,-1 } };
 
+	int horseArray[8][2] = 
+		{ { yPos + 2, xPos + 1 },
+		{ yPos + 2, xPos - 1 },
+		{ yPos - 2, xPos + 1 },
+		{ yPos - 2, xPos - 1 },
+		{ yPos - 1, xPos + 2 },
+		{ yPos - 1, xPos - 2 },
+		{ yPos + 1, xPos + 2 },
+		{ yPos + 1, xPos - 2 } };
 
-//assign arrya 0,1 the coordinates of the rectanged
-//assigns a,b the tile number
-//return true if clicked on actual tile
-bool getTilePressed(int x, int y) {
-	squareClickedCoords.actualX = -1;
-	squareClickedCoords.actualY = -1;
-	squareClickedCoords.virtualX = -1;
-	squareClickedCoords.virtualY = -1;
-	//x,y and tile no(x,y)
-	int a, b;
+		switch (matrixPieces[yPos][xPos].num) {
+			//KING 
+		case KING:
+			for( int ArrayCount = 0; ArrayCount<8;ArrayCount++){
+				//index on board and index doesnt cover any friendly miinons
+				if (kingArray[ArrayCount][0] > -1 && kingArray[ArrayCount][1] > -1 &&
+					kingArray[ArrayCount][0] < 8 && kingArray[ArrayCount][0] < 8   &&
+					matrixPieces[kingArray[ArrayCount][0]][kingArray[ArrayCount][1]].colour != turnColour ) {
 
-	//break if not in reigon
-	if (x > matrixSquareTile[7][7].coord[0] + widthSquare || y >matrixSquareTile[7][7].coord[1] + widthSquare) {
-		return false;
+					drawRectangle(hdc,
+						kingArray[ArrayCount][1],
+						kingArray[ArrayCount][0],
+						RED,
+						lightColour);
+				}
+			}  
+			break;
+			//QUEEN
+		case QUEEN:
+			pathExplorerPossibleMoves(hdc, matrixPieces, queenDir, xPos, yPos);
+			break;
+			//ROOKH
+		case ROOKH:
+			pathExplorerPossibleMoves(hdc, matrixPieces, rookhDir, xPos, yPos);
+			break;
+
+			//HORSE
+		case HORSE:
+			for (int ArrayCount = 0; ArrayCount<8; ArrayCount++) {
+				//index on board and index doesnt cover any friendly miinons
+				if (horseArray[ArrayCount][0] > -1 && horseArray[ArrayCount][1] > -1 &&
+					horseArray[ArrayCount][0] < 8 && horseArray[ArrayCount][0] < 8 &&
+					matrixPieces[horseArray[ArrayCount][0]][horseArray[ArrayCount][1]].colour != turnColour) {
+
+					drawRectangle(hdc,
+						horseArray[ArrayCount][1],
+						horseArray[ArrayCount][0],
+						RED,
+						lightColour);
+				}
+			}
+			break;
+			//ELEPHANT
+		case ELEPHANT:
+			pathExplorerPossibleMoves(hdc, matrixPieces, eleDir, xPos, yPos);
+			break;
+			//MINION
+		case MINION:
+
+			if (turnColour == homeColour) {
+				//draw in front if empty
+				if (matrixPieces[yPos - 1][xPos].num == EMPTY) {
+					drawRectangle(hdc,
+						xPos,
+						yPos - 1,
+						RED,
+						lightColour);
+					//if at home illumnintae second on e as well
+					if (matrixPieces[yPos][xPos].atHome == true && matrixPieces[yPos - 2][xPos].num == EMPTY) {
+						drawRectangle(hdc,
+							xPos,
+							yPos - 2,
+							RED,
+							lightColour);
+					}
+				}
+				//loo side ways
+				if (matrixPieces[yPos - 1][xPos - 1].num != EMPTY &&
+					matrixPieces[yPos - 1][xPos - 1].colour!= turnColour) {
+						drawRectangle(hdc,
+							xPos - 1,
+							yPos - 1,
+							ORANGE,
+							lightColour);
+				}
+
+				if (matrixPieces[yPos - 1][xPos + 1].num != EMPTY &&
+					matrixPieces[yPos - 1][xPos + 1].colour != turnColour) {
+					drawRectangle(hdc,
+						xPos + 1,
+						yPos - 1,
+						ORANGE,
+						lightColour);
+				}
+			}
+			else if (turnColour != homeColour) {
+				//draw in front if empty
+				if (matrixPieces[yPos + 1][xPos].num == EMPTY) {
+					drawRectangle(hdc,
+						xPos,
+						yPos + 1,
+						RED,
+						lightColour);
+					//if at home illumnintae second on e as well
+					if (matrixPieces[yPos][xPos].atHome == true && matrixPieces[yPos + 2][xPos].num == EMPTY) {
+						drawRectangle(hdc,
+							xPos,
+							yPos + 2,
+							RED,
+							lightColour);
+					}
+				}
+				//loo side ways
+				if (matrixPieces[yPos + 1][xPos - 1].num != EMPTY &&
+					matrixPieces[yPos + 1][xPos - 1].colour != turnColour) {
+					drawRectangle(hdc,
+						xPos - 1,
+						yPos + 1,
+						ORANGE,
+						lightColour);
+				}
+
+				if (matrixPieces[yPos + 1][xPos + 1].num != EMPTY &&
+					matrixPieces[yPos + 1][xPos + 1].colour != turnColour) {
+					drawRectangle(hdc,
+						xPos + 1,
+						yPos + 1,
+						ORANGE,
+						lightColour);
+				}
+			}
+
+			break;
+
+		}
+			
+	return 1;
+}
+
+//going over all path to check for CEHCK conditions
+void pathExplorerPossibleMoves(HDC hdc,chessPiece matrixPieces[8][8], int arrayDir[8][2], int xPos, int yPos) {
+
+	int yDir = 0, xDir = 1;
+	int arraySize = 0;
+	if (matrixPieces[yPos][xPos].num == QUEEN) {
+		arraySize = 8;
+	}
+	else {
+		arraySize = 4;
 	}
 
-	//find coords and index of click
-	for (a = 0; a < 8; a++) {
-		for (b = 0; b < 8; b++) {
-			if (x < (matrixSquareTile[a][b].coord[0] + widthSquare)) {
+	for (int path = 0; path < arraySize; path++) {
+		for (int b = 1; b < 8; b++) {  //excluede itself so no 0
+
+									   //if reach end of matrix then break
+			if (yPos + b*arrayDir[path][yDir] == 8 || xPos + b*arrayDir[path][xDir] == 8
+				|| yPos + b*arrayDir[path][yDir] == -1 || xPos + b*arrayDir[path][xDir] == -1) {
 				break;
 			}
-		}
-		if (y < (matrixSquareTile[a][b].coord[1] + widthSquare)) {
-			squareClickedCoords.actualX = matrixSquareTile[a][b].coord[0];
-			squareClickedCoords.actualY = matrixSquareTile[a][b].coord[1];
-			break;
-		}
-	}
-	squareClickedCoords.virtualX = b;
-	squareClickedCoords.virtualY = a;
 
-	if (squareClickedCoords.virtualX == -1) {
-		return false;
-	}
-	else {
-		return true;
-	}
+			//if Empty keep going and higlight RED
+			//if opposite colour higlight ORANGE
+			//
+			if (matrixPieces[yPos + b*arrayDir[path][yDir]][xPos + b*arrayDir[path][xDir]].num == EMPTY) {
+				drawRectangle(hdc,
+					xPos + b*arrayDir[path][xDir],					
+					yPos + b*arrayDir[path][yDir],				
+					RED,
+					lightColour);
+			}
+			else if(matrixPieces[yPos + b*arrayDir[path][yDir]][xPos + b*arrayDir[path][xDir]].colour != turnColour) {
+				drawRectangle(hdc,
+					xPos + b*arrayDir[path][xDir],
+					yPos + b*arrayDir[path][yDir],
+					ORANGE,
+					lightColour);
+				break;
+			}
+			else break;
+		}
+	}	
 }
 
+//unhighliight all the possible moves
+int possibleMovesUNHiglight(HDC hdc, coordHolder coordsFromUnhighlight) {
+	int xPos = coordsFromUnhighlight.virtualX;
+	int yPos = coordsFromUnhighlight.virtualY;
+	int kingArray[8][2] =
+	{ { yPos + 1, xPos + 0 },
+	{ yPos + 1, xPos + 1 },
+	{ yPos + 1, xPos - 1 },
+	{ yPos - 1, xPos + 0 },
+	{ yPos - 1, xPos + 1 },
+	{ yPos - 1, xPos - 1 },
+	{ yPos + 0, xPos + 1 },
+	{ yPos + 0, xPos - 1 } };
+
+	int queenDir[8][2] = { { 1,0 },{ 0,1 },{ -1,0 },{ 0,-1 },{ 1,1 },{ -1,-1 },{ -1,1 },{ 1,-1 } };
+	int rookhDir[4][2] = { { 1,1 },{ -1,-1 },{ -1,1 },{ 1,-1 } };
+	int eleDir[4][2] = { { 1,0 },{ 0,1 },{ -1,0 },{ 0,-1 } };
+
+	int horseArray[8][2] =
+	{ { yPos + 2, xPos + 1 },
+	{ yPos + 2, xPos - 1 },
+	{ yPos - 2, xPos + 1 },
+	{ yPos - 2, xPos - 1 },
+	{ yPos - 1, xPos + 2 },
+	{ yPos - 1, xPos - 2 },
+	{ yPos + 1, xPos + 2 },
+	{ yPos + 1, xPos - 2 } };
+
+	switch (matrixPieces[yPos][xPos].num) {
+		//KING 
+	case KING:
+		for (int ArrayCount = 0; ArrayCount<8; ArrayCount++) {
+			//index on board and index doesnt cover any friendly miinons
+			if (kingArray[ArrayCount][0] > -1 && kingArray[ArrayCount][1] > -1 &&
+				kingArray[ArrayCount][0] < 8 && kingArray[ArrayCount][0] < 8 &&
+				matrixPieces[kingArray[ArrayCount][0]][kingArray[ArrayCount][1]].colour != turnColour) {
+
+				drawRectangle(hdc,
+					kingArray[ArrayCount][1],
+					kingArray[ArrayCount][0],
+					matrixSquareTile[kingArray[ArrayCount][0]][kingArray[ArrayCount][1]].background,
+					NULL);
+			}
+		}
+
+		break;
+		//QUEEN
+	case QUEEN:
+		pathExplorerPossibleMovesUnhighlight(hdc, matrixPieces, queenDir, xPos, yPos);
+		break;
+		//ROOKH
+	case ROOKH:
+		pathExplorerPossibleMovesUnhighlight(hdc, matrixPieces, rookhDir, xPos, yPos);
+		break;
+
+		//HORSE
+	case HORSE:
+		for (int ArrayCount = 0; ArrayCount<8; ArrayCount++) {
+			//index on board and index doesnt cover any friendly miinons
+			if (horseArray[ArrayCount][0] > -1 && horseArray[ArrayCount][1] > -1 &&
+				horseArray[ArrayCount][0] < 8 && horseArray[ArrayCount][0] < 8 &&
+				matrixPieces[horseArray[ArrayCount][0]][horseArray[ArrayCount][1]].colour != turnColour) {
+
+				drawRectangle(hdc,
+					horseArray[ArrayCount][1],
+					horseArray[ArrayCount][0],
+					matrixSquareTile[horseArray[ArrayCount][0]][horseArray[ArrayCount][1]].background,
+					NULL);
+			}
+		}
+		break;
+		//ELEPHANT
+	case ELEPHANT:
+		pathExplorerPossibleMovesUnhighlight(hdc, matrixPieces, eleDir, xPos, yPos);
+		break;
+		//MINION
+	case MINION:
+		if (turnColour == homeColour) {
+			//draw in front if empty
+			if (matrixPieces[yPos - 1][xPos].num == EMPTY) {
+				drawRectangle(hdc,
+					xPos, 
+					yPos - 1,
+					matrixSquareTile[yPos - 1][xPos].background,
+					lightColour);
+				//if at home illumnintae second on e as well
+				if ( matrixPieces[yPos - 2][xPos].num == EMPTY) {
+					drawRectangle(hdc,
+						xPos,
+						yPos - 2,
+						matrixSquareTile[yPos - 2][xPos].background,
+						lightColour);
+				}
+			}
+			//loo side ways
+			if (matrixPieces[yPos - 1][xPos - 1].num != EMPTY &&
+				matrixPieces[yPos - 1][xPos - 1].colour != turnColour) {
+				drawRectangle(hdc,
+					xPos - 1,
+					yPos - 1,
+					matrixSquareTile[yPos - 1][xPos - 1].background,
+					lightColour);
+			}
+
+			if (matrixPieces[yPos - 1][xPos + 1].num != EMPTY &&
+				matrixPieces[yPos - 1][xPos + 1].colour != turnColour) {
+				drawRectangle(hdc,
+					xPos + 1,
+					yPos - 1,
+					matrixSquareTile[yPos - 1][xPos + 1].background,
+					lightColour);
+			}
+		}
+		else if (turnColour != homeColour) {
+			//draw in front if empty
+			if (matrixPieces[yPos + 1][xPos].num == EMPTY) {
+				drawRectangle(hdc,
+					xPos,
+					yPos + 1,
+					matrixSquareTile[yPos + 1][xPos].background,
+					lightColour);
+				//dont need to check for home , undraw anyways
+				if (matrixPieces[yPos + 2][xPos].num == EMPTY) {
+					drawRectangle(hdc,
+						xPos,
+						yPos + 2,
+						matrixSquareTile[yPos + 2][xPos].background,
+						lightColour);
+				}
+			}
+			//loo side ways
+			if (matrixPieces[yPos + 1][xPos - 1].num != EMPTY &&
+				matrixPieces[yPos + 1][xPos - 1].colour != turnColour) {
+				drawRectangle(hdc,
+					xPos - 1,
+					yPos + 1,
+					matrixSquareTile[yPos + 1][xPos - 1].background,
+					lightColour);
+			}
+
+			if (matrixPieces[yPos + 1][xPos + 1].num != EMPTY &&
+				matrixPieces[yPos + 1][xPos + 1].colour != turnColour) {
+				drawRectangle(hdc,
+					xPos + 1,
+					yPos + 1,
+					matrixSquareTile[yPos + 1][xPos + 1].background,
+					lightColour);
+			}
+		}
+		break;
+
+	}
+
+	return 1;
+}
+
+//explore all moves to unhigfhlight
+void pathExplorerPossibleMovesUnhighlight(HDC hdc, chessPiece matrixPieces[8][8], int arrayDir[8][2], int xPos, int yPos) {
+
+	int yDir = 0, xDir = 1;
+	int arraySize = 0;
+	if (matrixPieces[yPos][xPos].num == QUEEN) {
+		arraySize = 8;
+	}
+	else {
+		arraySize = 4;
+	}
+
+	for (int path = 0; path < arraySize; path++) {
+		for (int b = 1; b < 8; b++) {  //excluede itself so no 0
+
+			 //if reach end of matrix then break
+			if (yPos + b*arrayDir[path][yDir] == 8 || xPos + b*arrayDir[path][xDir] == 8
+				|| yPos + b*arrayDir[path][yDir] == -1 || xPos + b*arrayDir[path][xDir] == -1) {
+				break;
+			}
+
+			//if Empty keep going and higlight RED
+			//if opposite colour higlight ORANGE
+			//
+			if (matrixPieces[yPos + b*arrayDir[path][yDir]][xPos + b*arrayDir[path][xDir]].num == EMPTY) {
+				drawRectangle(hdc,
+					xPos + b*arrayDir[path][xDir],
+					yPos + b*arrayDir[path][yDir],
+					matrixSquareTile[yPos + b*arrayDir[path][yDir]][xPos + b*arrayDir[path][xDir]].background,
+					lightColour);
+			}
+			else if (matrixPieces[yPos + b*arrayDir[path][yDir]][xPos + b*arrayDir[path][xDir]].colour != turnColour) {
+				drawRectangle(hdc,
+					xPos + b*arrayDir[path][xDir],
+					yPos + b*arrayDir[path][yDir],
+					matrixSquareTile[yPos + b*arrayDir[path][yDir]][xPos + b*arrayDir[path][xDir]].background,
+					lightColour);
+				break;
+			}
+			else break;
+		}
+	}
+}
+//==================================== HOVER =================================
 //get coordinates and index of hovering tile
-coordHolder getTileHover(int x, int y) {
-	coordHolder empty = { 0,0,0,0 };
-	bool tileHover = getTilePressed(x, y);
-	if (!tileHover) {
-		return (empty);
-	}
-	else {
-		return(squareClickedCoords);
-	}
-}
-
-void squareHoverResp(HDC hdc) {
-	//if same square unhighlight it 
-	//if ((matrixSquareClicked[(squareClickedCoords[2])][squareClickedCoords[3]]) == 1) {
-	//	//CHECK IF ANOTHER SQUARE HAS BEEN CLICKED IF YES
-	//	drawRectangle(hdc, squareClickedCoords[0], squareClickedCoords[1], squareClickedCoords[0] + widthSquare, squareClickedCoords[1] + widthSquare,
-	//		matrixBackground[squareClickedCoords[2]][squareClickedCoords[3]], NULL);
-
-
-	//	matrixSquareClicked[squareClickedCoords[2]][squareClickedCoords[3]] = 0;
-	//}
-	//else {
-	//	//check if square even needs ot be highlighted
-	//	//RULE 1 : NO MORE THAN ONE SQUARE CAN BE CLICKED
-	//	//RULE 2 : SQUARE THAT IS CLICKED MUST HAV ESOMETHING IN IT
-	//	//RULE 3 : SQUARE CLICKED THIRD TIME MUST NOT HAVE ANYTHING IN IT
-	//	//goto brokeSquareHighlightRule;
-	//	//higlight rec
-		drawRectangle(hdc, squareClickedCoords.actualX, squareClickedCoords.actualY, squareClickedCoords.actualX+ widthSquare, squareClickedCoords.actualY + widthSquare,
-			CreateSolidBrush(RGB(150, 230, 150)), NULL);
-
-	//	matrixSquareClicked[squareClickedCoords[2]][squareClickedCoords[3]] = 1;
-	//}
-}
+//coordHolder getTileHover(int x, int y) {
+//	coordHolder empty = { 0,0,0,0 };
+//	bool tileHover = getTilePressed(x, y);
+//	if (!tileHover) {
+//		return (empty);
+//	}
+//	else {
+//		return(squareClickedCoords);
+//	}
+//}
+//
+//void squareHoverResp(HDC hdc) {
+//	//if same square unhighlight it 
+//	//if ((matrixSquareClicked[(squareClickedCoords[2])][squareClickedCoords[3]]) == 1) {
+//	//	//CHECK IF ANOTHER SQUARE HAS BEEN CLICKED IF YES
+//	//	drawRectangle(hdc, squareClickedCoords[0], squareClickedCoords[1], squareClickedCoords[0] + widthSquare, squareClickedCoords[1] + widthSquare,
+//	//		matrixBackground[squareClickedCoords[2]][squareClickedCoords[3]], NULL);
+//
+//
+//	//	matrixSquareClicked[squareClickedCoords[2]][squareClickedCoords[3]] = 0;
+//	//}
+//	//else {
+//	//	//check if square even needs ot be highlighted
+//	//	//RULE 1 : NO MORE THAN ONE SQUARE CAN BE CLICKED
+//	//	//RULE 2 : SQUARE THAT IS CLICKED MUST HAV ESOMETHING IN IT
+//	//	//RULE 3 : SQUARE CLICKED THIRD TIME MUST NOT HAVE ANYTHING IN IT
+//	//	//goto brokeSquareHighlightRule;
+//	//	//higlight rec
+//		drawRectangle(hdc, squareClickedCoords.actualX, squareClickedCoords.actualY, squareClickedCoords.actualX+ widthSquare, squareClickedCoords.actualY + widthSquare,
+//			CreateSolidBrush(RGB(150, 230, 150)), NULL);
+//
+//	//	matrixSquareClicked[squareClickedCoords[2]][squareClickedCoords[3]] = 1;
+//	//}
+//}

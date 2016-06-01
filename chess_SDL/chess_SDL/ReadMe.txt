@@ -66,11 +66,14 @@ THINGS TO DO
 	-special minion kill rule
 	-end of board rule where minions turn into heroes
 	-check mate rule											
-	-check path of check mate                                    
+	-check path of check mate                                   CHECK                         
 	-turn by turn play adn user cannot interfer with other       CHECK
-	-minion kill rule			CHECK
+	-minion kill rule		                                 	CHECK
 	- castling rule
 
 	-able to get positons directly
 	-hover over tiules
 	-page reload fix
+	-illuinating possibel moves for each minion
+
+
