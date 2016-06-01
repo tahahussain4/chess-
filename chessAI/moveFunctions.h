@@ -5,6 +5,7 @@
 int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8]);
 int moveRook(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8]);
 int moveBishop(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8]);
+int moveQueen(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8]);
 int printBoard(int board[8][8]);
 
 #endif // MOVEFUNCTIONS_H_INCLUDED
