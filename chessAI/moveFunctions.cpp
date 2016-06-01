@@ -85,7 +85,7 @@ int moveBishop(int pieceID,int currentPosition[2], int nextPosition[2], int boar
 
     return 0;
 
-{
+}
 
 int moveRook(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8])
 {

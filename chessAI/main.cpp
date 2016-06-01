@@ -78,7 +78,7 @@ int main()
 
     int next[2] = {y - 1,x - 1};
 
-    moveBiship(2,current,next,fullBoard);
+    moveRook(2,current,next,fullBoard);
 
     printBoard(fullBoard);
 
