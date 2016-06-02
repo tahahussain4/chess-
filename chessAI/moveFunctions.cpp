@@ -3,6 +3,26 @@
 
 using namespace std;
 
+int possibleMove(int currentPosition[2], int board[8][8]);
+{
+    //This function goes through every piece and determines if the piece can be moved
+    for(int i = -1; i < 2; i++)
+    {
+        for(int j = 0; i < 3; j++)
+        {
+            if(board[currentPosition[0] - 1][currentPosition[1] + j] != 0)
+            {
+                printf("Can't move");
+            }
+            else
+            {
+                printf("You can move");
+            }
+        }
+    }
+    return 0;
+}
+
 int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board[8][8])
 {
 
