@@ -52,9 +52,25 @@ int movePawn(int pieceID,int currentPosition[2], int nextPosition[2], int board[
 
     while(stepNumber != 0)
     {
-        if(rowMove)
+        if(rowMove < 0)
         {
-
+            board[rowPosition][currentPosition[1]] = pieceID;
+            rowPosition = rowPosition - 1;
+            stepNumber = stepNumber + 1;
+        }
+        else if(rowMove < 0 && columnMove < 0)
+        {
+            board[rowPosition][columnPosition] = pieceID;
+            rowPosition = rowPosition - 1;
+            columnPosition = columnPosition - 1;
+            stepNumber = stepNumber + 1;
+        }
+        else if(columnMove > 0 && rowMove < 0)
+        {
+            board[rowPosition][columnPosition] = pieceID;
+            columnPosition = columnPosition + 1;
+            rowPosition = rowPosition - 1;
+            stepNumber = stepNumber + 1;
         }
     }
     return 0;
