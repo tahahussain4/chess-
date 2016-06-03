@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1464550989 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\main.cpp
-	<iostream>
-	<stdio.h>
-
-1464631869 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.cpp
-	<iostream>
-	<stdio.h>
-
