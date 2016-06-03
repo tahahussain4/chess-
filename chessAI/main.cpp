@@ -8,6 +8,7 @@ This program is a chess AI engine that takes in a piece move and outputs the upd
 #include <iostream>
 #include <stdio.h>
 #include "moveFunctions.h"
+#include "interface.h"
 
 using namespace std;
 
@@ -35,17 +36,6 @@ int main()
     //Setting up an empty board array
     //Position is indicated by (row,column) coordinate
     //Black pieces are at the top of the array and white pieces are at the bottom of the array
-
-    int emptyBoard[8][8] = {
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0}
-                    };
 
     //Setting up a full board array
 
@@ -78,7 +68,9 @@ int main()
 
     int next[2] = {y - 1,x - 1};
 
-    moveQueen(2,current,next,fullBoard);
+    movePawn(1,current,next,fullBoard);
+
+    possibleMove(current,fullBoard);
 
     printBoard(fullBoard);
 
