@@ -18,8 +18,9 @@
 //colour for the individual pieces
 #define darkColour CreateSolidBrush(RGB(0, 0, 0)) 
 #define lightColour CreateSolidBrush(RGB(255, 255, 255))
-#define RED	CreateSolidBrush(RGB(150, 10, 10))
-#define ORANGE CreateSolidBrush(RGB(255, 178, 102))
+#define EMPTYSPACES	CreateSolidBrush(RGB(255, 229, 204))
+#define ENEMYCOLOUR CreateSolidBrush(RGB(255, 178, 102))
+#define CASTLECOLOUR CreateSolidBrush(RGB(178, 102, 255))
 #define TILECOLOURONE COLOR_MENUTEXT
 #define TILECOLOURTWO COLOR_INFOTEXT
 
