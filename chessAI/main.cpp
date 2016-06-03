@@ -68,7 +68,7 @@ int main()
 
     int next[2] = {y - 1,x - 1};
 
-    movePawn(1,current,next,fullBoard);
+    //movePawn(1,current,next,fullBoard);
 
     possibleMove(current,fullBoard);
 
