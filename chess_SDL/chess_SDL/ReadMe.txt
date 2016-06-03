@@ -70,6 +70,8 @@ THINGS TO DO
 	-turn by turn play adn user cannot interfer with other       CHECK
 	-minion kill rule		                                 	CHECK
 	- castling rule
+	- kings paths higlight should be restricted ax it cant move towards check 
+	-that also applies for oother minons as well
 
 	-able to get positons directly
 	-hover over tiules
