@@ -13,13 +13,13 @@ This program is a chess AI engine that takes in a piece move and outputs the upd
 using namespace std;
 
 /*
-Piece ID refers to a value that designates a specific piece, and should not be confused with the relative value of the piece
-Pawn: 1
-Knight: 2
-Bishop: 3
-Rook: 4
-Queen; 5
-King: 6
+Piece ID refers to a character that designates a specific piece
+Pawn: P/p
+Knight: N/n
+Bishop: B/b
+Rook: R/r
+Queen; Q/q
+King: A/q
 
 Relative piece values determine which piece is worth more in order to make decisions
 Pawn: 1
@@ -39,16 +39,22 @@ int main()
 
     //Setting up a full board array
 
-    int fullBoard[8][8] = {
-                    {4,2,3,5,6,3,2,4},
-                    {1,1,1,1,1,1,1,1},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0},
-                    {1,1,1,1,1,1,1,1},
-                    {4,2,3,5,6,3,2,4}
+    char fullBoard[12][12] = {
+                    {'x','x','x','x','x','x','x','x','x','x','x','x'},
+                    {'x','x','x','x','x','x','x','x','x','x','x','x'},
+                    {'x','x','r','n','b','q','a','b','n','r','x','x'},
+                    {'x','x','p','p','p','p','p','p','p','p','x','x'},
+                    {'x','x','o','o','o','o','o','o','o','o','x','x'},
+                    {'x','x','o','o','o','o','o','o','o','o','x','x'},
+                    {'x','x','o','o','o','o','o','o','o','o','x','x'},
+                    {'x','x','o','o','o','o','o','o','o','o','x','x'},
+                    {'x','x','P','P','P','P','P','P','P','P','x','x'},
+                    {'x','x','R','N','B','Q','A','B','N','R','x','x'},
+                    {'x','x','x','x','x','x','x','x','x','x','x','x'},
+                    {'x','x','x','x','x','x','x','x','x','x','x','x'}
                     };
+
+    printBoard(fullBoard);
 
     //Take input variables
 
@@ -67,10 +73,6 @@ int main()
     scanf("%i",&y);
 
     int next[2] = {y - 1,x - 1};
-
-    //movePawn(1,current,next,fullBoard);
-
-    possibleMove(current,fullBoard);
 
     printBoard(fullBoard);
 

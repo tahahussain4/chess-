@@ -3,21 +3,21 @@
 	<iostream>
 	<stdio.h>
 
-1464984236 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\main.cpp
+1464998060 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\main.cpp
 	<iostream>
 	<stdio.h>
 	"moveFunctions.h"
 	"interface.h"
 
-1464982654 c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.h
+1464990297 c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.h
 
-1464982635 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.cpp
+1464998222 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.cpp
 	<iostream>
 	<stdio.h>
 
-1464982659 c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.h
+1464990306 c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.h
 
-1464983805 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.cpp
+1465017390 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.cpp
 	<iostream>
 	<stdio.h>
 
