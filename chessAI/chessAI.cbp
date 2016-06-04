@@ -32,15 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="interface.cpp" />
-		<Unit filename="interface.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="moveFunctions.cpp" />
-		<Unit filename="moveFunctions.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
 			<debugger />
+			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

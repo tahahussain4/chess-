@@ -1,23 +1,19 @@
 # depslib dependency file v1.0
-1464802700 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\chessai\movefunctions.cpp
+1465074781 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.cpp
 	<iostream>
 	<stdio.h>
 
-1464998060 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\main.cpp
+1465075812 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\main.cpp
 	<iostream>
 	<stdio.h>
 	"moveFunctions.h"
 	"interface.h"
 
-1464990297 c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.h
+1465075347 c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.h
 
-1464998222 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.cpp
-	<iostream>
-	<stdio.h>
+1465074817 c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.h
 
-1464990306 c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.h
-
-1465054765 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.cpp
+1465074707 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.cpp
 	<iostream>
 	<stdio.h>
 

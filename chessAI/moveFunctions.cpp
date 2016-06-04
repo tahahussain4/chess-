@@ -1,437 +1,226 @@
 #include <iostream>
 #include <stdio.h>
 
-using namespace std;
-
 int movePiece(int currentPosition[2], int nextPosition[2], char board[12][12])
 {
-
-    //This function moves a piece and updates the board array
-    //It takes in the current position of the piece and the final position of the piece, and updates the board array to reflect that move
-
-    //These variables store how much the piece was moved in the row and column directions
     int rowMove;
     int columnMove;
 
-    //Calculate how far the piece was moved in the row and column direction
     rowMove = nextPosition[0] - currentPosition[0];
     columnMove = nextPosition[1] - currentPosition[1];
 
     char pieceID = board[currentPosition[0]][currentPosition[1]];
 
-    //Set the value of the square of the current piece position to zero
-    board[currentPosition[0]][currentPosition[1]] = ' ';
-    //Set the value of the square of the next piece position to the piece value
+    board[currentPosition[0]][currentPosition[1]] = 'o';
+
     board[currentPosition[0] + rowMove][currentPosition[1] + columnMove] = pieceID;
 
     return 0;
 
 }
 
-int movePawn(int pieceID,int currentPosition[2], int nextPosition[2], int board[12][12])
+int moveRook(int currentPosition[2],char board[12][12])
 {
-
-    //This function moves a piece and updates the board array
-    //It takes in the current position of the piece and the final position of the piece, and updates the board array to reflect that move
-
-    //These variables store how much the piece was moved in the row and column directions
-    int rowMove;
-    int columnMove;
-
-    //Calculate how far the piece was moved in the row and column direction
-    rowMove = nextPosition[0] - currentPosition[0];
-    columnMove = nextPosition[1] - currentPosition[1];
-
-    //Set the value of the square of the current piece position to zero
-    board[currentPosition[0]][currentPosition[1]] = 0;
-
-    //This for loop iterates through all the adjacent square steps taken in order to reach the next position, and performs some kind of logic for each square
-
-    //This keeps track of total number of steps that can be taken, if rowMove is not zero then columnMove is zero, and vice versa
-    int stepNumber = rowMove;
-    int rowPosition = currentPosition[0];
-    int columnPosition = currentPosition[1];
-
-    while(stepNumber != 0)
+    int top = true;
+    int bottom = true;
+    int left = true;
+    int right = true;
+    int n = 1;
+    while(top || bottom || left || right)
     {
-        if(rowMove < 0)
+        if(top)
         {
-            board[rowPosition][currentPosition[1]] = pieceID;
-            rowPosition = rowPosition - 1;
-            stepNumber = stepNumber + 1;
+            if(board[currentPosition[0] + n][currentPosition[1]] == 'o')
+            {
+                printf("This is possible (t) \n");
+            }
+            else
+            {
+                char square = board[currentPosition[0] + n][currentPosition[1]];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (t) \n");
+                    break;
+                case 'P':
+                    printf("This is a pawn (t) \n");
+                    break;
+                }
+                top = false;
+            }
         }
-        else if(rowMove < 0 && columnMove < 0)
+
+        if(bottom)
         {
-            board[rowPosition][columnPosition] = pieceID;
-            rowPosition = rowPosition - 1;
-            columnPosition = columnPosition - 1;
-            stepNumber = stepNumber + 1;
+            if(board[currentPosition[0] - n][currentPosition[1]] == 'o')
+            {
+                printf("This is possible (b) \n");
+            }
+            else
+            {
+                char square = board[currentPosition[0] - n][currentPosition[1]];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (b) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (b) \n");
+                    break;
+                }
+                bottom = false;
+            }
         }
-        else if(columnMove > 0 && rowMove < 0)
+
+        if(left)
         {
-            board[rowPosition][columnPosition] = pieceID;
-            columnPosition = columnPosition + 1;
-            rowPosition = rowPosition - 1;
-            stepNumber = stepNumber + 1;
+            if(board[currentPosition[0]][currentPosition[1] - n] == 'o')
+            {
+                printf("This is possible (l) \n");
+            }
+            else
+            {
+                char square = board[currentPosition[0]][currentPosition[1] - n];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (l) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (l) \n");
+                    break;
+                }
+                left = false;
+            }
         }
+
+        if(right)
+        {
+            if(board[currentPosition[0]][currentPosition[1] + n] == 'o')
+            {
+                printf("This is possible (r) \n");
+            }
+            else
+            {
+                char square = board[currentPosition[0]][currentPosition[1] + n];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (r) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (r) \n");
+                    break;
+                }
+                right = false;
+            }
+        }
+
+        n = n + 1;
+
     }
     return 0;
 }
 
-int moveBishop(int pieceID,int currentPosition[2], int nextPosition[2], int board[12][12])
+int moveBishop(int currentPosition[2],char board[12][12])
 {
-
-    //This function moves a piece and updates the board array
-    //It takes in the current position of the piece and the final position of the piece, and updates the board array to reflect that move
-
-    //These variables store how much the piece was moved in the row and column directions
-    int rowMove;
-    int columnMove;
-
-    //Calculate how far the piece was moved in the row and column direction
-    rowMove = nextPosition[0] - currentPosition[0];
-    columnMove = nextPosition[1] - currentPosition[1];
-
-    //Set the value of the square of the current piece position to zero
-    board[currentPosition[0]][currentPosition[1]] = 0;
-
-    //This for loop iterates through all the adjacent square steps taken in order to reach the next position, and performs some kind of logic for each square
-
-    //This keeps track of total number of steps that can be taken, if rowMove is not zero then columnMove is zero, and vice versa
-    int stepNumber = rowMove;
-    int rowPosition = currentPosition[0];
-    int columnPosition = currentPosition[1];
-
-    while(stepNumber != 0)
+    int top_right = true;
+    int top_left = true;
+    int bottom_right = true;
+    int bottom_left = true;
+    int n = 1;
+    while(top_right || bottom_left || top_left || bottom_right)
     {
-        if(rowMove > 0 && columnMove > 0)
+        if(top_right)
         {
-            //Set the value of the square of the next piece position to the piece value
-            board[rowPosition][columnPosition] = pieceID;
-            rowPosition = rowPosition + 1;
-            columnPosition = columnPosition + 1;
-            stepNumber = stepNumber - 1;
+            if(board[currentPosition[0] + n][currentPosition[1] + n] == 'o')
+            {
+                printf("This is possible (tr) \n");
+            }
+            else
+            {
+                char square = board[currentPosition[0] + n][currentPosition[1] + n];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (tr) \n");
+                    break;
+                case 'P':
+                    printf("This is a pawn (tr) \n");
+                    break;
+                }
+                top_right = false;
+            }
         }
-        else if(rowMove < 0 && columnMove < 0)
+
+        if(bottom_right)
         {
-            board[rowPosition][columnPosition] = pieceID;
-            rowPosition = rowPosition - 1;
-            columnPosition = columnPosition - 1;
-            stepNumber = stepNumber + 1;
+            if(board[currentPosition[0] - n][currentPosition[1] + n] == 'o')
+            {
+                printf("This is possible (br) \n");
+            }
+            else
+            {
+                char square = board[currentPosition[0] - n][currentPosition[1] + n];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (br) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (br) \n");
+                    break;
+                }
+                bottom_right = false;
+            }
         }
-        else if(columnMove > 0 && rowMove < 0)
+
+        if(top_left)
         {
-            board[rowPosition][columnPosition] = pieceID;
-            columnPosition = columnPosition + 1;
-            rowPosition = rowPosition - 1;
-            stepNumber = stepNumber + 1;
+            if(board[currentPosition[0] + n][currentPosition[1] - n] == 'o')
+            {
+                printf("This is possible (tl) \n");
+            }
+            else
+            {
+                char square = board[currentPosition[0] + n][currentPosition[1] - n];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (tl) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (tl) \n");
+                    break;
+                }
+                top_left = false;
+            }
         }
-        else if(columnMove < 0 && rowMove > 0)
+
+        if(bottom_left)
         {
-            board[rowPosition][columnPosition] = pieceID;
-            columnPosition = columnPosition - 1;
-            rowPosition = rowPosition + 1;
-            stepNumber = stepNumber - 1;
+            if(board[currentPosition[0] - n][currentPosition[1] - n] == 'o')
+            {
+                printf("This is possible (bl) \n");
+            }
+            else
+            {
+                char square = board[currentPosition[0] - n][currentPosition[1] - n];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (bl) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (bl) \n");
+                    break;
+                }
+                bottom_left = false;
+            }
         }
+
+        n = n + 1;
+
     }
-
-    return 0;
-
-}
-
-int moveRook(int pieceID,int currentPosition[2], int nextPosition[2], int board[12][12])
-{
-
-    //This function moves a piece and updates the board array
-    //It takes in the current position of the piece and the final position of the piece, and updates the board array to reflect that move
-
-    //These variables store how much the piece was moved in the row and column directions
-    int rowMove;
-    int columnMove;
-
-    //Calculate how far the piece was moved in the row and column direction
-    rowMove = nextPosition[0] - currentPosition[0];
-    columnMove = nextPosition[1] - currentPosition[1];
-
-    //Set the value of the square of the current piece position to zero
-    board[currentPosition[0]][currentPosition[1]] = 0;
-
-    //This for loop iterates through all the adjacent square steps taken in order to reach the next position, and performs some kind of logic for each square
-
-    //This keeps track of total number of steps that can be taken, if rowMove is not zero then columnMove is zero, and vice versa
-    int stepNumber = rowMove + columnMove;
-    int rowPosition = currentPosition[0];
-    int columnPosition = currentPosition[1];
-
-    while(stepNumber != 0)
-    {
-        if(rowMove > 0)
-        {
-            //Set the value of the square of the next piece position to the piece value
-            board[rowPosition][currentPosition[1]] = pieceID;
-            rowPosition = rowPosition + 1;
-            stepNumber = stepNumber - 1;
-        }
-        else if(rowMove < 0)
-        {
-            board[rowPosition][currentPosition[1]] = pieceID;
-            rowPosition = rowPosition - 1;
-            stepNumber = stepNumber + 1;
-        }
-        else if(columnMove > 0)
-        {
-            board[currentPosition[0]][columnPosition] = pieceID;
-            columnPosition = columnPosition + 1;
-            stepNumber = stepNumber - 1;
-        }
-        else if(columnMove < 0)
-        {
-            board[currentPosition[0]][columnPosition] = pieceID;
-            columnPosition = columnPosition - 1;
-            stepNumber = stepNumber + 1;
-        }
-    }
-
-    return 0;
-
-}
-
-int moveQueen(int pieceID,int currentPosition[2], int nextPosition[2], int board[12][12])
-{
-    //This function moves a piece and updates the board array
-    //It takes in the current position of the piece and the final position of the piece, and updates the board array to reflect that move
-
-    //These variables store how much the piece was moved in the row and column directions
-    int rowMove;
-    int columnMove;
-
-    //Calculate how far the piece was moved in the row and column direction
-    rowMove = nextPosition[0] - currentPosition[0];
-    columnMove = nextPosition[1] - currentPosition[1];
-
-    //Set the value of the square of the current piece position to zero
-    board[currentPosition[0]][currentPosition[1]] = 0;
-
-    //This for loop iterates through all the adjacent square steps taken in order to reach the next position, and performs some kind of logic for each square
-
-    //This keeps track of total number of steps that can be taken, if rowMove is not zero then columnMove is zero, and vice versa
-    int stepNumber = rowMove + columnMove;
-    int rowPosition = currentPosition[0];
-    int columnPosition = currentPosition[1];
-
-    while(stepNumber != 0)
-    {
-        if(rowMove > 0 && columnMove == 0)
-        {
-            //Set the value of the square of the next piece position to the piece value
-            board[rowPosition][currentPosition[1]] = pieceID;
-            rowPosition = rowPosition + 1;
-            stepNumber = stepNumber - 1;
-        }
-        else if(rowMove < 0 && columnMove == 0)
-        {
-            board[rowPosition][currentPosition[1]] = pieceID;
-            rowPosition = rowPosition - 1;
-            stepNumber = stepNumber + 1;
-        }
-        else if(columnMove > 0 && rowMove == 0)
-        {
-            board[currentPosition[0]][columnPosition] = pieceID;
-            columnPosition = columnPosition + 1;
-            stepNumber = stepNumber - 1;
-        }
-        else if(columnMove < 0 && rowMove == 0)
-        {
-            board[currentPosition[0]][columnPosition] = pieceID;
-            columnPosition = columnPosition - 1;
-            stepNumber = stepNumber + 1;
-        }
-        else if(rowMove > 0 && columnMove > 0)
-        {
-            //Set the value of the square of the next piece position to the piece value
-            board[rowPosition][columnPosition] = pieceID;
-            rowPosition = rowPosition + 1;
-            columnPosition = columnPosition + 1;
-            stepNumber = stepNumber - 1;
-        }
-        else if(rowMove < 0 && columnMove < 0)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            rowPosition = rowPosition - 1;
-            columnPosition = columnPosition - 1;
-            stepNumber = stepNumber + 1;
-        }
-        else if(columnMove > 0 && rowMove < 0)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            columnPosition = columnPosition + 1;
-            rowPosition = rowPosition - 1;
-            stepNumber = stepNumber + 1;
-        }
-        else if(columnMove < 0 && rowMove > 0)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            columnPosition = columnPosition - 1;
-            rowPosition = rowPosition + 1;
-            stepNumber = stepNumber - 1;
-        }
-    }
-
     return 0;
 }
-
-int moveKing(int pieceID,int currentPosition[2], int nextPosition[2], int board[12][12])
-{
-    //This function moves a piece and updates the board array
-    //It takes in the current position of the piece and the final position of the piece, and updates the board array to reflect that move
-
-    //These variables store how much the piece was moved in the row and column directions
-    int rowMove;
-    int columnMove;
-
-    //Calculate how far the piece was moved in the row and column direction
-    rowMove = nextPosition[0] - currentPosition[0];
-    columnMove = nextPosition[1] - currentPosition[1];
-
-    //Set the value of the square of the current piece position to zero
-    board[currentPosition[0]][currentPosition[1]] = 0;
-
-    //This for loop iterates through all the adjacent square steps taken in order to reach the next position, and performs some kind of logic for each square
-
-    //This keeps track of total number of steps that can be taken, if rowMove is not zero then columnMove is zero, and vice versa
-    int stepNumber;
-    int rowPosition = currentPosition[0];
-    int columnPosition = currentPosition[1];
-
-    while(stepNumber != 0)
-    {
-        if(rowMove > 0 && columnMove == 0)
-        {
-            //Set the value of the square of the next piece position to the piece value
-            board[rowPosition][currentPosition[1]] = pieceID;
-            rowPosition = rowPosition + 1;
-            stepNumber = 0;
-        }
-        else if(rowMove < 0 && columnMove == 0)
-        {
-            board[rowPosition][currentPosition[1]] = pieceID;
-            rowPosition = rowPosition - 1;
-            stepNumber = 0;
-        }
-        else if(columnMove > 0 && rowMove == 0)
-        {
-            board[currentPosition[0]][columnPosition] = pieceID;
-            columnPosition = columnPosition + 1;
-            stepNumber = 0;
-        }
-        else if(columnMove < 0 && rowMove == 0)
-        {
-            board[currentPosition[0]][columnPosition] = pieceID;
-            columnPosition = columnPosition - 1;
-            stepNumber = 0;
-        }
-        else if(rowMove > 0 && columnMove > 0)
-        {
-            //Set the value of the square of the next piece position to the piece value
-            board[rowPosition][columnPosition] = pieceID;
-            rowPosition = rowPosition + 1;
-            columnPosition = columnPosition + 1;
-            stepNumber = 0;
-        }
-        else if(rowMove < 0 && columnMove < 0)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            rowPosition = rowPosition - 1;
-            columnPosition = columnPosition - 1;
-            stepNumber = 0;
-        }
-        else if(columnMove > 0 && rowMove < 0)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            columnPosition = columnPosition + 1;
-            rowPosition = rowPosition - 1;
-            stepNumber = 0;
-        }
-        else if(columnMove < 0 && rowMove > 0)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            columnPosition = columnPosition - 1;
-            rowPosition = rowPosition + 1;
-            stepNumber = 0;
-        }
-    }
-
-    return 0;
-}
-
-int moveKnight(int pieceID,int currentPosition[2], int nextPosition[2], int board[12][12])
-{
-    //This function moves a piece and updates the board array
-    //It takes in the current position of the piece and the final position of the piece, and updates the board array to reflect that move
-
-    //These variables store how much the piece was moved in the row and column directions
-    int rowMove;
-    int columnMove;
-
-    //Calculate how far the piece was moved in the row and column direction
-    rowMove = nextPosition[0] - currentPosition[0];
-    columnMove = nextPosition[1] - currentPosition[1];
-
-    //Set the value of the square of the current piece position to zero
-    board[currentPosition[0]][currentPosition[1]] = 0;
-
-    //This for loop iterates through all the adjacent square steps taken in order to reach the next position, and performs some kind of logic for each square
-
-    //This keeps track of total number of steps that can be taken, if rowMove is not zero then columnMove is zero, and vice versa
-    int stepNumber;
-    int rowPosition = currentPosition[0];
-    int columnPosition = currentPosition[1];
-
-    while(stepNumber != 0)
-    {
-        if(rowMove == 2 && columnMove == 1)
-        {
-            //Set the value of the square of the next piece position to the piece value
-            board[rowPosition][columnPosition] = pieceID;
-            stepNumber = 0;
-        }
-        else if(rowMove == 2 && columnMove == -1)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            stepNumber = 0;
-        }
-        else if(rowMove == -2 && columnMove == 1)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            stepNumber = 0;
-        }
-        else if(rowMove == -2 && columnMove == -1)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            stepNumber = 0;
-        }
-        else if(rowMove == 1 && columnMove == 2)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            stepNumber = 0;
-        }
-        else if(rowMove == 1 && columnMove == -2)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            stepNumber = 0;
-        }
-        else if(rowMove == -1 && columnMove == 2)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            stepNumber = 0;
-        }
-        else if(rowMove == -1 && columnMove == -2)
-        {
-            board[rowPosition][columnPosition] = pieceID;
-            stepNumber = 0;
-        }
-    }
-
-    return 0;
-}
-
