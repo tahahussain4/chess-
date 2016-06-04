@@ -40,7 +40,7 @@ int main()
     int next[2] = {y + 1,x + 1};
 
     //moveRook(current,fullBoard);
-    moveBishop(current,fullBoard);
+    moveKing(current,fullBoard);
 
     return 0;
 }
