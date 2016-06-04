@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board[12][12])
+int movePiece(int currentPosition[2], int nextPosition[2], char board[12][12])
 {
 
     //This function moves a piece and updates the board array
@@ -16,6 +16,8 @@ int movePiece(int pieceID,int currentPosition[2], int nextPosition[2], int board
     //Calculate how far the piece was moved in the row and column direction
     rowMove = nextPosition[0] - currentPosition[0];
     columnMove = nextPosition[1] - currentPosition[1];
+
+    char pieceID = board[currentPosition[0]][currentPosition[1]];
 
     //Set the value of the square of the current piece position to zero
     board[currentPosition[0]][currentPosition[1]] = ' ';
