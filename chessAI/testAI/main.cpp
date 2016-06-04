@@ -39,9 +39,11 @@ int main()
 
     int next[2] = {y + 1,x + 1};
 
-    movePiece(current,next,fullBoard);
+    moveRook(current,fullBoard);
 
-    printBoard(fullBoard);
+    //movePiece(current,next,fullBoard);
+
+    //printBoard(fullBoard);
 
     return 0;
 }
