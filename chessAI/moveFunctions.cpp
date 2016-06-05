@@ -19,6 +19,22 @@ int movePiece(int currentPosition[2], int nextPosition[2], char board[12][12])
 
 }
 
+int checkPiece(char pieceID)
+{
+    switch(pieceID)
+    {
+    case 'x':
+        printf("Move not possible (t) \n");
+        break;
+    case 'P':
+        printf("This is a pawn (t) \n");
+        break;
+    }
+
+    printf("This works \n");
+
+}
+
 int movePawn(int currentPosition[2],char board[12][12])
 {
     int top = true;
@@ -37,15 +53,8 @@ int movePawn(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 1][currentPosition[1]];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (t) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (t) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top = false;
             }
         }
@@ -691,6 +700,206 @@ int moveKing(int currentPosition[2],char board[12][12])
                     break;
                 }
                 bottom_left = false;
+            }
+        }
+    }
+    return 0;
+}
+
+int moveKnight(int currentPosition[2],char board[12][12])
+{
+    int top_right = true;
+    int top_left = true;
+    int left_top = true;
+    int left_bottom = true;
+    int right_top = true;
+    int right_bottom = true;
+    int bottom_right = true;
+    int bottom_left = true;
+
+    while(top_right || top_left || left_top || left_bottom || bottom_right || bottom_left || right_top || right_bottom)
+    {
+        if(top_right)
+        {
+            if(board[currentPosition[0] + 2][currentPosition[1] + 1] == 'o')
+            {
+                printf("This is possible (tr) \n");
+                top_right = false;
+            }
+            else
+            {
+                char square = board[currentPosition[0] + 2][currentPosition[1] + 1];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (tr) \n");
+                    break;
+                case 'P':
+                    printf("This is a pawn (tr) \n");
+                    break;
+                }
+                top_right = false;
+            }
+        }
+
+        if(top_left)
+        {
+            if(board[currentPosition[0] + 2][currentPosition[1] - 1] == 'o')
+            {
+                printf("This is possible (tl) \n");
+                top_left = false;
+            }
+            else
+            {
+                char square = board[currentPosition[0] + 2][currentPosition[1] - 1];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (tl) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (tl) \n");
+                    break;
+                }
+                top_left = false;
+            }
+        }
+
+        if(right_top)
+        {
+            if(board[currentPosition[0] + 1][currentPosition[1] + 2] == 'o')
+            {
+                printf("This is possible (rt) \n");
+                right_top = false;
+            }
+            else
+            {
+                char square = board[currentPosition[0] + 1][currentPosition[1] + 2];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (rt) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (rt) \n");
+                    break;
+                }
+                right_top = false;
+            }
+        }
+
+        if(right_bottom)
+        {
+            if(board[currentPosition[0]  - 1][currentPosition[1] + 2] == 'o')
+            {
+                printf("This is possible (br) \n");
+                right_bottom = false;
+            }
+            else
+            {
+                char square = board[currentPosition[0] - 1][currentPosition[1] + 2];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (br) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (br) \n");
+                    break;
+                }
+                right_bottom = false;
+            }
+        }
+
+        if(bottom_right)
+        {
+            if(board[currentPosition[0] - 2][currentPosition[1] + 1] == 'o')
+            {
+                printf("This is possible (br) \n");
+                bottom_right = false;
+            }
+            else
+            {
+                char square = board[currentPosition[0] - 2][currentPosition[1] + 1];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (br) \n");
+                    break;
+                case 'P':
+                    printf("This is a pawn (br) \n");
+                    break;
+                }
+                bottom_right = false;
+            }
+        }
+
+        if(bottom_left)
+        {
+            if(board[currentPosition[0] - 2][currentPosition[1] - 1] == 'o')
+            {
+                printf("This is possible (bl) \n");
+                bottom_left = false;
+            }
+            else
+            {
+                char square = board[currentPosition[0] - 2][currentPosition[1] - 1];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (bl) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (bl) \n");
+                    break;
+                }
+                bottom_left = false;
+            }
+        }
+
+        if(left_top)
+        {
+            if(board[currentPosition[0] + 1][currentPosition[1] - 2] == 'o')
+            {
+                printf("This is possible (lt) \n");
+                left_top = false;
+            }
+            else
+            {
+                char square = board[currentPosition[0] + 1][currentPosition[1] - 1];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (lt) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (lt) \n");
+                    break;
+                }
+                left_top = false;
+            }
+        }
+
+        if(left_bottom)
+        {
+            if(board[currentPosition[0] - 1][currentPosition[1] - 2] == 'o')
+            {
+                printf("This is possible (lb) \n");
+                left_bottom = false;
+            }
+            else
+            {
+                char square = board[currentPosition[0] - 1][currentPosition[1] - 2];
+                switch(square)
+                {
+                case 'x':
+                    printf("Move not possible (lb) \n");
+                    break;
+                case 'p':
+                    printf("This is a pawn (lb) \n");
+                    break;
+                }
+                left_bottom = false;
             }
         }
     }
