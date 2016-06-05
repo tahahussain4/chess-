@@ -19,9 +19,10 @@
 	<stdio.h>
 	"generationFunctions.h"
 
-1465095128 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\generationfunctions.cpp
+1465097063 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\generationfunctions.cpp
 	<iostream>
 	<stdio.h>
+	"moveFunctions.h"
 
-1465094158 c:\users\owner\dropbox\programming files\github\chess-\chessai\generationfunctions.h
+1465096958 c:\users\owner\dropbox\programming files\github\chess-\chessai\generationfunctions.h
 

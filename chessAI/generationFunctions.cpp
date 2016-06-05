@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdio.h>
+#include "moveFunctions.h"
 
 int checkPiece(char pieceID)
 {
@@ -48,8 +49,69 @@ int checkPiece(char pieceID)
         printf("This is a black king \n");
         break;
     }
-    return 0;
+    return pieceID;
+}
 
+int findMoves(char pieceID,int currentPosition[2],char board[12][12])
+{
+    switch(pieceID)
+    {
+    case 'o':
+        printf("This is possible \n");
+        break;
+    case 'x':
+        printf("Move not possible \n");
+        break;
+    case 'P':
+        printf("This is a white pawn \n");
+        movePawn(currentPosition,board);
+        break;
+    case 'p':
+        printf("This is a black pawn \n");
+        movePawn(currentPosition,board);
+        break;
+    case 'R':
+        printf("This is a white rook \n");
+        moveRook(currentPosition,board);
+        break;
+    case 'r':
+        printf("This is a black rook \n");
+        moveRook(currentPosition,board);
+        break;
+    case 'N':
+        printf("This is a white knight \n");
+        moveKnight(currentPosition,board);
+        break;
+    case 'n':
+        printf("This is a black knight \n");
+        moveKnight(currentPosition,board);
+        break;
+    case 'B':
+        printf("This is a white bishop \n");
+        moveBishop(currentPosition,board);
+        break;
+    case 'b':
+        printf("This is a black bishop \n");
+        moveBishop(currentPosition,board);
+        break;
+    case 'Q':
+        printf("This is a white queen \n");
+        moveQueen(currentPosition,board);
+        break;
+    case 'q':
+        printf("This is a black queen \n");
+        moveQueen(currentPosition,board);
+        break;
+    case 'A':
+        printf("This is a white king \n");
+        moveKing(currentPosition,board);
+        break;
+    case 'a':
+        printf("This is a black king \n");
+        moveKing(currentPosition,board);
+        break;
+    }
+    return 0;
 }
 
 int generateMoves(char board[12][12])
@@ -61,7 +123,9 @@ int generateMoves(char board[12][12])
         for(int j = 2; j < 10; j++)
         {
             char square = board[i][j];
-            checkPiece(square);
+            int current[2] = {i,j};
+            printf("%c \n",checkPiece(square));
+            findMoves(square,current,board);
         };
 
         printf("\n");
