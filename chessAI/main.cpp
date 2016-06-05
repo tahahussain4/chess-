@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "moveFunctions.h"
 #include "interface.h"
+#include "generationFunctions.h"
 
 int main()
 {
@@ -39,8 +40,7 @@ int main()
 
     int next[2] = {y + 1,x + 1};
 
-    //moveRook(current,fullBoard);
-    moveRook(current,fullBoard);
+    generateMoves(fullBoard);
 
     return 0;
 }
