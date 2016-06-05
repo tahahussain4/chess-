@@ -23,15 +23,49 @@ int checkPiece(char pieceID)
 {
     switch(pieceID)
     {
+    case 'o':
+        printf("This is possible \n");
     case 'x':
-        printf("Move not possible (t) \n");
+        printf("Move not possible \n");
         break;
     case 'P':
-        printf("This is a pawn (t) \n");
+        printf("This is a white pawn \n");
+        break;
+    case 'p':
+        printf("This is a black pawn \n");
+        break;
+    case 'R':
+        printf("This is a white rook \n");
+        break;
+    case 'r':
+        printf("This is a black rook \n");
+        break;
+    case 'N':
+        printf("This is a white knight \n");
+        break;
+    case 'n':
+        printf("This is a black knight \n");
+        break;
+    case 'B':
+        printf("This is a white bishop \n");
+        break;
+    case 'b':
+        printf("This is a black bishop \n");
+        break;
+    case 'Q':
+        printf("This is a white queen \n");
+        break;
+    case 'q':
+        printf("This is a black queen \n");
+        break;
+    case 'A':
+        printf("This is a white king \n");
+        break;
+    case 'a':
+        printf("This is a black king \n");
         break;
     }
-
-    printf("This works \n");
+    return 0;
 
 }
 
@@ -68,15 +102,8 @@ int movePawn(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 1][currentPosition[1] - 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tl) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (tl) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_left = false;
             }
         }
@@ -90,15 +117,8 @@ int movePawn(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 1][currentPosition[1] + 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tr) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (tr) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_right = false;
             }
         }
@@ -125,15 +145,8 @@ int moveRook(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + n][currentPosition[1]];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (t) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (t) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top = false;
             }
         }
@@ -147,15 +160,8 @@ int moveRook(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - n][currentPosition[1]];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (b) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (b) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom = false;
             }
         }
@@ -169,15 +175,8 @@ int moveRook(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0]][currentPosition[1] - n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (l) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (l) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 left = false;
             }
         }
@@ -191,15 +190,8 @@ int moveRook(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0]][currentPosition[1] + n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (r) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (r) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 right = false;
             }
         }
@@ -229,15 +221,8 @@ int moveBishop(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + n][currentPosition[1] + n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tr) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (tr) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_right = false;
             }
         }
@@ -251,15 +236,8 @@ int moveBishop(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - n][currentPosition[1] + n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (br) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (br) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom_right = false;
             }
         }
@@ -273,15 +251,8 @@ int moveBishop(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + n][currentPosition[1] - n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tl) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (tl) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_left = false;
             }
         }
@@ -295,15 +266,8 @@ int moveBishop(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - n][currentPosition[1] - n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (bl) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (bl) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom_left = false;
             }
         }
@@ -337,15 +301,8 @@ int moveQueen(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + n][currentPosition[1]];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (t) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (t) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top = false;
             }
         }
@@ -359,15 +316,8 @@ int moveQueen(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - n][currentPosition[1]];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (b) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (b) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom = false;
             }
         }
@@ -381,15 +331,8 @@ int moveQueen(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0]][currentPosition[1] - n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (l) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (l) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 left = false;
             }
         }
@@ -403,15 +346,8 @@ int moveQueen(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0]][currentPosition[1] + n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (r) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (r) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 right = false;
             }
         }
@@ -424,15 +360,8 @@ int moveQueen(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + n][currentPosition[1] + n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tr) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (tr) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_right = false;
             }
         }
@@ -446,15 +375,8 @@ int moveQueen(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - n][currentPosition[1] + n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (br) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (br) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom_right = false;
             }
         }
@@ -468,15 +390,8 @@ int moveQueen(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + n][currentPosition[1] - n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tl) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (tl) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_left = false;
             }
         }
@@ -490,15 +405,8 @@ int moveQueen(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - n][currentPosition[1] - n];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (bl) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (bl) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom_left = false;
             }
         }
@@ -530,15 +438,8 @@ int moveKing(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 1][currentPosition[1]];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (t) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (t) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top = false;
             }
         }
@@ -553,15 +454,8 @@ int moveKing(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - 1][currentPosition[1]];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (b) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (b) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom = false;
             }
         }
@@ -576,15 +470,8 @@ int moveKing(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0]][currentPosition[1] - 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (l) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (l) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 left = false;
             }
         }
@@ -599,15 +486,8 @@ int moveKing(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0]][currentPosition[1] + 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (r) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (r) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 right = false;
             }
         }
@@ -621,15 +501,8 @@ int moveKing(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 1][currentPosition[1] + 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tr) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (tr) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_right = false;
             }
         }
@@ -644,15 +517,8 @@ int moveKing(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - 1][currentPosition[1] + 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (br) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (br) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom_right = false;
             }
         }
@@ -667,15 +533,8 @@ int moveKing(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 1][currentPosition[1] - 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tl) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (tl) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_left = false;
             }
         }
@@ -690,15 +549,8 @@ int moveKing(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - 1][currentPosition[1] - 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (bl) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (bl) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom_left = false;
             }
         }
@@ -729,15 +581,8 @@ int moveKnight(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 2][currentPosition[1] + 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tr) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (tr) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_right = false;
             }
         }
@@ -752,15 +597,8 @@ int moveKnight(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 2][currentPosition[1] - 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (tl) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (tl) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 top_left = false;
             }
         }
@@ -775,15 +613,8 @@ int moveKnight(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 1][currentPosition[1] + 2];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (rt) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (rt) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 right_top = false;
             }
         }
@@ -798,15 +629,8 @@ int moveKnight(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - 1][currentPosition[1] + 2];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (br) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (br) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 right_bottom = false;
             }
         }
@@ -821,15 +645,8 @@ int moveKnight(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - 2][currentPosition[1] + 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (br) \n");
-                    break;
-                case 'P':
-                    printf("This is a pawn (br) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom_right = false;
             }
         }
@@ -844,15 +661,8 @@ int moveKnight(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - 2][currentPosition[1] - 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (bl) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (bl) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 bottom_left = false;
             }
         }
@@ -867,15 +677,8 @@ int moveKnight(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] + 1][currentPosition[1] - 1];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (lt) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (lt) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 left_top = false;
             }
         }
@@ -890,15 +693,8 @@ int moveKnight(int currentPosition[2],char board[12][12])
             else
             {
                 char square = board[currentPosition[0] - 1][currentPosition[1] - 2];
-                switch(square)
-                {
-                case 'x':
-                    printf("Move not possible (lb) \n");
-                    break;
-                case 'p':
-                    printf("This is a pawn (lb) \n");
-                    break;
-                }
+                checkPiece(square);
+
                 left_bottom = false;
             }
         }
