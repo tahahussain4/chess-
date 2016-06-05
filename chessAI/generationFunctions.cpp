@@ -13,40 +13,40 @@ int checkPiece(char pieceID)
         printf("Move not possible \n");
         break;
     case 'P':
-        printf("This is a white pawn \n");
+        printf("Attacking a white pawn \n");
         break;
     case 'p':
-        printf("This is a black pawn \n");
+        printf("Attacking a black pawn \n");
         break;
     case 'R':
-        printf("This is a white rook \n");
+        printf("Attacking a white rook \n");
         break;
     case 'r':
-        printf("This is a black rook \n");
+        printf("Attacking a black rook \n");
         break;
     case 'N':
-        printf("This is a white knight \n");
+        printf("Attacking a white knight \n");
         break;
     case 'n':
-        printf("This is a black knight \n");
+        printf("Attacking a black knight \n");
         break;
     case 'B':
-        printf("This is a white bishop \n");
+        printf("Attacking a white bishop \n");
         break;
     case 'b':
-        printf("This is a black bishop \n");
+        printf("Attacking a black bishop \n");
         break;
     case 'Q':
-        printf("This is a white queen \n");
+        printf("Attacking a white queen \n");
         break;
     case 'q':
-        printf("This is a black queen \n");
+        printf("Attacking a black queen \n");
         break;
     case 'A':
-        printf("This is a white king \n");
+        printf("Attacking a white king \n");
         break;
     case 'a':
-        printf("This is a black king \n");
+        printf("Attacking a black king \n");
         break;
     }
     return pieceID;
@@ -57,10 +57,8 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
     switch(pieceID)
     {
     case 'o':
-        printf("This is possible \n");
         break;
     case 'x':
-        printf("Move not possible \n");
         break;
     case 'P':
         printf("This is a white pawn \n");
@@ -124,7 +122,6 @@ int generateMoves(char board[12][12])
         {
             char square = board[i][j];
             int current[2] = {i,j};
-            printf("%c \n",checkPiece(square));
             findMoves(square,current,board);
         };
 

@@ -24,23 +24,41 @@ int main()
 
     printBoard(fullBoard);
 
-    int x, y;
+    int game = true;
 
-    printf("Enter the x position of the piece you would like to move: ");
-    scanf("%i",&x);
-    printf("Enter the y position of the piece you would like to move: ");
-    scanf("%i",&y);
+    while(game)
+    {
+        /*char prompt;
 
-    int current[2] = {y + 1,x + 1};
+        printf("Would you like to quit this game (y/n)?: ");
+        scanf("%c",&prompt);
 
-    printf("Enter the x position of the position you would like to move to: ");
-    scanf("%i",&x);
-    printf("Enter the y position of the position you would like to move to: ");
-    scanf("%i",&y);
+        if(prompt == 'y')
+        {
+            game = false;
+        }*/
 
-    int next[2] = {y + 1,x + 1};
+        int x, y;
 
-    generateMoves(fullBoard);
+        printf("Enter the x position of the piece you would like to move: ");
+        scanf("%i",&x);
+        printf("Enter the y position of the piece you would like to move: ");
+        scanf("%i",&y);
 
+        int current[2] = {y + 1,x + 1};
+
+        printf("Enter the x position of the position you would like to move to: ");
+        scanf("%i",&x);
+        printf("Enter the y position of the position you would like to move to: ");
+        scanf("%i",&y);
+
+        int next[2] = {y + 1,x + 1};
+
+        movePiece(current,next,fullBoard);
+
+        generateMoves(fullBoard);
+
+        printBoard(fullBoard);
+    }
     return 0;
 }
