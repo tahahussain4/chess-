@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdio.h>
+#include <vector>
 #include "moveFunctions.h"
 #include "interface.h"
 #include "generationFunctions.h"
@@ -23,13 +24,8 @@ int main()
                     };
 
     //Initializing array to store generated moves
-    int moveNumb = 0;
+    int moveNumb = 1000;
     char moveList[moveNumb];
-
-    for(int i; i < )
-    {
-
-    }
 
     printBoard(fullBoard);
 
@@ -58,6 +54,15 @@ int main()
         generateMoves(fullBoard);
 
         printBoard(fullBoard);
+
+        std::vector< int > arr;
+
+        arr.push_back(1);
+        arr.push_back(2);
+        arr.push_back(3);
+
+    printf("%i",arr[1]);
+
     }
     return 0;
 }

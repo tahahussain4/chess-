@@ -4,11 +4,9 @@
 
 int checkPiece(char pieceID)
 {
+    //When checking for the possible moves of a given piece, this function returns which piece is under attack
     switch(pieceID)
     {
-    case 'o':
-        printf("This is an empty square \n");
-        break;
     case 'x':
         printf("Move not possible \n");
         break;
@@ -54,6 +52,7 @@ int checkPiece(char pieceID)
 
 int findMoves(char pieceID,int currentPosition[2],char board[12][12])
 {
+    //Returns which piece is occupying a given square and all the possible moves for that piece
     switch(pieceID)
     {
     case 'o':
