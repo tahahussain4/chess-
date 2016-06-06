@@ -51,7 +51,7 @@ int checkPiece(char pieceID)
     return pieceID;
 }
 
-int findMoves(char pieceID,int currentPosition[2],char board[12][12], char pawnList[])
+int findMoves(char pieceID,int currentPosition[2],char board[12][12])
 {
     //Returns which piece is occupying a given square and all the possible moves for that piece
     switch(pieceID)
