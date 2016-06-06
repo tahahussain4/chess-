@@ -22,22 +22,21 @@ int main()
                     {'x','x','x','x','x','x','x','x','x','x','x','x'}
                     };
 
+    //Initializing array to store generated moves
+    int moveNumb = 0;
+    char moveList[moveNumb];
+
+    for(int i; i < )
+    {
+
+    }
+
     printBoard(fullBoard);
 
     int game = true;
 
     while(game)
     {
-        /*char prompt;
-
-        printf("Would you like to quit this game (y/n)?: ");
-        scanf("%c",&prompt);
-
-        if(prompt == 'y')
-        {
-            game = false;
-        }*/
-
         int x, y;
 
         printf("Enter the x position of the piece you would like to move: ");

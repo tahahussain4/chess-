@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="generationFunctions.cpp" />
+		<Unit filename="generationFunctions.h" />
 		<Unit filename="interface.cpp" />
 		<Unit filename="interface.h" />
 		<Unit filename="main.cpp" />

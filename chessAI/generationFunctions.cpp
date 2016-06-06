@@ -7,7 +7,7 @@ int checkPiece(char pieceID)
     switch(pieceID)
     {
     case 'o':
-        printf("This is possible \n");
+        printf("This is an empty square \n");
         break;
     case 'x':
         printf("Move not possible \n");
