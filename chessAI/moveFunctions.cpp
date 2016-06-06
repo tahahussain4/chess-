@@ -33,6 +33,8 @@ int movePawn(int currentPosition[2],char board[12][12])
             if(board[currentPosition[0] + 1][currentPosition[1]] == 'o')
             {
                 printf("This is possible (t) \n");
+                checkPiece(square);
+
                 top = false;
             }
             else

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdio.h>
+#include <vector>
 #include "moveFunctions.h"
 
 int checkPiece(char pieceID)
@@ -50,7 +51,7 @@ int checkPiece(char pieceID)
     return pieceID;
 }
 
-int findMoves(char pieceID,int currentPosition[2],char board[12][12])
+int findMoves(char pieceID,int currentPosition[2],char board[12][12], char pawnList[])
 {
     //Returns which piece is occupying a given square and all the possible moves for that piece
     switch(pieceID)
@@ -123,8 +124,8 @@ int generateMoves(char board[12][12])
             int current[2] = {i,j};
             findMoves(square,current,board);
         };
-
         printf("\n");
-
     };
+
+    return 0;
 }

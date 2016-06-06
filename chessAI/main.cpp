@@ -24,8 +24,7 @@ int main()
                     };
 
     //Initializing array to store generated moves
-    int moveNumb = 1000;
-    char moveList[moveNumb];
+    std::vector< char > moveList;
 
     printBoard(fullBoard);
 
@@ -54,15 +53,6 @@ int main()
         generateMoves(fullBoard);
 
         printBoard(fullBoard);
-
-        std::vector< int > arr;
-
-        arr.push_back(1);
-        arr.push_back(2);
-        arr.push_back(3);
-
-    printf("%i",arr[1]);
-
     }
     return 0;
 }
