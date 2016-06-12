@@ -6,6 +6,7 @@
 int checkPiece(char pieceID)
 {
     //When checking for the possible moves of a given piece, this function returns which piece is under attack
+
     switch(pieceID)
     {
     case 'x':
@@ -54,6 +55,7 @@ int checkPiece(char pieceID)
 int findMoves(char pieceID,int currentPosition[2],char board[12][12])
 {
     //Returns which piece is occupying a given square and all the possible moves for that piece
+
     switch(pieceID)
     {
     case 'o':
@@ -61,51 +63,51 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
     case 'x':
         break;
     case 'P':
-        printf("This is a white pawn \n");
+        printf("This is a white pawn, and these are it's possible moves: \n");
         movePawn(currentPosition,board);
         break;
     case 'p':
-        printf("This is a black pawn \n");
+        printf("This is a black pawn and these are it's possible moves: \n");
         movePawn(currentPosition,board);
         break;
     case 'R':
-        printf("This is a white rook \n");
+        printf("This is a white rook and these are it's possible moves: \n");
         moveRook(currentPosition,board);
         break;
     case 'r':
-        printf("This is a black rook \n");
+        printf("This is a black rook and these are it's possible moves: \n");
         moveRook(currentPosition,board);
         break;
     case 'N':
-        printf("This is a white knight \n");
+        printf("This is a white knight and these are it's possible moves: \n");
         moveKnight(currentPosition,board);
         break;
     case 'n':
-        printf("This is a black knight \n");
+        printf("This is a black knight and these are it's possible moves: \n");
         moveKnight(currentPosition,board);
         break;
     case 'B':
-        printf("This is a white bishop \n");
+        printf("This is a white bishop and these are it's possible moves: \n");
         moveBishop(currentPosition,board);
         break;
     case 'b':
-        printf("This is a black bishop \n");
+        printf("This is a black bishop and these are it's possible moves: \n");
         moveBishop(currentPosition,board);
         break;
     case 'Q':
-        printf("This is a white queen \n");
+        printf("This is a white queen and these are it's possible moves: \n");
         moveQueen(currentPosition,board);
         break;
     case 'q':
-        printf("This is a black queen \n");
+        printf("This is a black queen and these are it's possible moves: \n");
         moveQueen(currentPosition,board);
         break;
     case 'A':
-        printf("This is a white king \n");
+        printf("This is a white king and these are it's possible moves: \n");
         moveKing(currentPosition,board);
         break;
     case 'a':
-        printf("This is a black king \n");
+        printf("This is a black king and these are it's possible moves: \n");
         moveKing(currentPosition,board);
         break;
     }

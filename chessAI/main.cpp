@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <stdio.h>
 #include <vector>
@@ -51,6 +52,7 @@ int main()
         movePiece(current,next,fullBoard);
 
         generateMoves(fullBoard);
+
 
         printBoard(fullBoard);
     }
