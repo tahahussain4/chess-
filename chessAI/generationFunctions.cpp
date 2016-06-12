@@ -52,7 +52,7 @@ int checkPiece(char pieceID)
     return pieceID;
 }
 
-int findMoves(char pieceID,int currentPosition[2],char board[12][12])
+int findMoves(char pieceID,int currentPosition[2],char board[12][12], int List[])
 {
     //Returns which piece is occupying a given square and all the possible moves for that piece
 
@@ -64,11 +64,11 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
         break;
     case 'P':
         printf("This is a white pawn, and these are it's possible moves: \n");
-        movePawn(currentPosition,board);
+        movePawn(currentPosition,board,List);
         break;
     case 'p':
         printf("This is a black pawn and these are it's possible moves: \n");
-        movePawn(currentPosition,board);
+        movePawn(currentPosition,board,List);
         break;
     case 'R':
         printf("This is a white rook and these are it's possible moves: \n");
@@ -114,7 +114,7 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
     return 0;
 }
 
-int generateMoves(char board[12][12])
+int generateMoves(char board[12][12], int List[])
 {
     //Check each square for a piece
     for(int i = 2; i < 10; i++)
@@ -124,7 +124,7 @@ int generateMoves(char board[12][12])
         {
             char square = board[i][j];
             int current[2] = {i,j};
-            findMoves(square,current,board);
+            findMoves(square,current,board,List);
         };
         printf("\n");
     };

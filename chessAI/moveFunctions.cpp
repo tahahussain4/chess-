@@ -20,7 +20,7 @@ int movePiece(int currentPosition[2], int nextPosition[2], char board[12][12])
 
 }
 
-int movePawn(int currentPosition[2],char board[12][12])
+int movePawn(int currentPosition[2],char board[12][12],int List[])
 {
     int top = true;
     int top_left = true;
