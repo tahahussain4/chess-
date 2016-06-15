@@ -25,15 +25,18 @@ int main()
                     };
 
     //Initializing array to store generated moves
-    std::vector< char > moveList;
+    //std::vector< char > moveList;
 
     char List[1000][2];
+
+    int current[2] = {1,2};
+    int next[2] = {4,5};
+
+    moveList('p',List,current,next);
 
     printBoard(fullBoard);
 
     int game = true;
-
-    moveList();
 
     while(game)
     {

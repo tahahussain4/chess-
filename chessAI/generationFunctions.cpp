@@ -117,8 +117,10 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
 int moveList(char pieceID, char List[1000][2], int currentPosition[2], int nextPosition[2])
 {
 
-    List[0][0] = "t";
+    List[0][0] = pieceID;
+    List[0][1] = 't';
     printf("%c",List[0][0]);
+    printf("%c",List[0][1]);
     return  0;
 }
 
