@@ -27,9 +27,13 @@ int main()
     //Initializing array to store generated moves
     std::vector< char > moveList;
 
+    char List[1000][2];
+
     printBoard(fullBoard);
 
     int game = true;
+
+    moveList();
 
     while(game)
     {
