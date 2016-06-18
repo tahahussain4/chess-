@@ -3,6 +3,20 @@
 #include <vector>
 #include "moveFunctions.h"
 
+int moveList(char pieceID, char List[1000][4], int currentPosition[2], int nextPosition[2])
+{
+
+    List[0][0] = pieceID;
+    List[0][1] = 't';
+    List[0][2] = 'g';
+    List[0][3] = 'k';
+    printf("%c",List[0][0]);
+    printf("%c",List[0][1]);
+    printf("%c",List[0][2]);
+    printf("%c",List[0][3]);
+    return  0;
+}
+
 int checkPiece(char pieceID)
 {
     //When checking for the possible moves of a given piece, this function returns which piece is under attack
@@ -112,16 +126,6 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
         break;
     }
     return 0;
-}
-
-int moveList(char pieceID, char List[1000][2], int currentPosition[2], int nextPosition[2])
-{
-
-    List[0][0] = pieceID;
-    List[0][1] = 't';
-    printf("%c",List[0][0]);
-    printf("%c",List[0][1]);
-    return  0;
 }
 
 int generateMoves(char board[12][12])
