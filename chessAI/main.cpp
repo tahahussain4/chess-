@@ -31,18 +31,23 @@ int main()
     int current[2] = {1,2};
     int next[2] = {4,5};
 
-    for(int i = 0;i < 12;i++)
+    moveList(fullBoard[0][0],List,1,2,3,4);
+
+
+    /*for(int i = 0;i < 12;i++)
     {
         for(int j = 0;j < 12;j++)
         {
             moveList(fullBoard[i][j],List,current[0],current[1],next[0],next[1]);
         }
-    }
+    }*/
 
-    printf("%c",List[0][0]);
-    printf("%c",List[0][1]);
-    printf("%c",List[0][2]);
-    printf("%c",List[0][3]);
+    printf("%i",List[0][0]);
+    printf("%i",List[0][1]);
+    printf("%i",List[0][2]);
+    printf("%i",List[0][3]);
+    printf("%i",List[0][4]);
+    printf("%i",List[0][5]);
     printf("\n");
 
     printBoard(fullBoard);
