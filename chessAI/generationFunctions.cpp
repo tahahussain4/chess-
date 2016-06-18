@@ -3,17 +3,15 @@
 #include <vector>
 #include "moveFunctions.h"
 
-int moveList(char pieceID, char List[1000][4], int currentPosition[2], int nextPosition[2])
+int moveList(char pieceID, int List[1000][6], int cx, int cy, int nx, int ny)
 {
 
     List[0][0] = pieceID;
     List[0][1] = 't';
-    List[0][2] = 'g';
-    List[0][3] = 'k';
-    printf("%c",List[0][0]);
-    printf("%c",List[0][1]);
-    printf("%c",List[0][2]);
-    printf("%c",List[0][3]);
+    List[0][2] = cx;
+    List[0][3] = cy;
+    List[0][4] = nx;
+    List[0][5] = ny;
     return  0;
 }
 

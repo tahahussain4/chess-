@@ -5,7 +5,7 @@ int generateMoves(char board[12][12]);
 
 int findMoves(char pieceID,int currentPosition[2],char board[12][12]);
 
-int moveList(char pieceID, char List[1000][4], int currentPosition[2], int nextPosition[2]);
+int moveList(char pieceID, int List[1000][6], int cx, int cy, int nx, int ny);
 
 int checkPiece(char pieceID);
 
