@@ -3,15 +3,15 @@
 #include <vector>
 #include "moveFunctions.h"
 
-int moveList(char pieceID, int List[1000][6], int cx, int cy, int nx, int ny)
+int addMoves(char pieceID, int moveList[1000][6], int cx, int cy, int nx, int ny)
 {
 
-    List[0][0] = pieceID;
-    List[0][1] = 't';
-    List[0][2] = cx;
-    List[0][3] = cy;
-    List[0][4] = nx;
-    List[0][5] = ny;
+    moveList[0][0] = pieceID;
+    moveList[0][1] = 't';
+    moveList[0][2] = cx;
+    moveList[0][3] = cy;
+    moveList[0][4] = nx;
+    moveList[0][5] = ny;
     return  0;
 }
 
@@ -126,7 +126,7 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
     return 0;
 }
 
-int generateMoves(char board[12][12])
+int generateMoves(char board[12][12], int List[1000][6])
 {
     //Check each square for a piece
     for(int i = 2; i < 10; i++)
@@ -137,6 +137,11 @@ int generateMoves(char board[12][12])
             char square = board[i][j];
             int current[2] = {i,j};
             findMoves(square,current,board);
+
+            //Assign moves to moveList
+            addMoves(square,List,current[0],current[1],1,2);
+
+
         };
         printf("\n");
     };

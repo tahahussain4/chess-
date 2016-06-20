@@ -1,11 +1,11 @@
 #ifndef GENERATIONFUNCTIONS_H_INCLUDED
 #define GENERATIONFUNCTIONS_H_INCLUDED
 
-int generateMoves(char board[12][12]);
+int generateMoves(char board[12][12], int List[1000][6]);
 
 int findMoves(char pieceID,int currentPosition[2],char board[12][12]);
 
-int moveList(char pieceID, int List[1000][6], int cx, int cy, int nx, int ny);
+int addMoves(char pieceID, int moveList[1000][6], int cx, int cy, int nx, int ny);
 
 int checkPiece(char pieceID);
 

@@ -25,30 +25,11 @@ int main()
                     };
 
     //Initializing array to store generated moves
-    //std::vector< char > moveList;
+    //std::vector< int > moveList(1000)(6);
 
-    int List[1000][6];
-    int current[2] = {1,2};
-    int next[2] = {4,5};
+    int moveList[1000][6];
 
-    moveList(fullBoard[0][0],List,1,2,3,4);
-
-
-    /*for(int i = 0;i < 12;i++)
-    {
-        for(int j = 0;j < 12;j++)
-        {
-            moveList(fullBoard[i][j],List,current[0],current[1],next[0],next[1]);
-        }
-    }*/
-
-    printf("%i",List[0][0]);
-    printf("%i",List[0][1]);
-    printf("%i",List[0][2]);
-    printf("%i",List[0][3]);
-    printf("%i",List[0][4]);
-    printf("%i",List[0][5]);
-    printf("\n");
+    addMoves('P',moveList,1,2,3,4);
 
     printBoard(fullBoard);
 
@@ -74,8 +55,7 @@ int main()
 
         movePiece(current,next,fullBoard);
 
-        generateMoves(fullBoard);
-
+        generateMoves(fullBoard,moveList);
 
         printBoard(fullBoard);
     }
