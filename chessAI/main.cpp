@@ -26,11 +26,8 @@ int main()
                     };
 
     //Initializing array to store generated moves
-    vector< vector<int> > moveList(1, vector<int>(6));
-    //int moveList[1000][6];
-
-    moveList[0][0] = 2;
-    printf("%i",moveList[0][0]);
+    //vector< vector<int> > moveList(1000, vector<int>(6));
+    int moveList[1000][6];
 
     printBoard(fullBoard);
 
@@ -56,7 +53,7 @@ int main()
 
         movePiece(current,next,fullBoard);
 
-        //generateMoves(fullBoard,moveList);
+        generateMoves(fullBoard,moveList);
 
         printBoard(fullBoard);
     }

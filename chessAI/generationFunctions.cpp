@@ -3,7 +3,7 @@
 #include <vector>
 #include "moveFunctions.h"
 
-int addMoves(char pieceID, int moveList[][6], int cx, int cy, int nx, int ny)
+int addMoves(char pieceID, int moveList[1000][6], int cx, int cy, int nx, int ny)
 {
 
     return  0;
@@ -120,7 +120,7 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
     return pieceID;
 }
 
-int generateMoves(char board[12][12], int List[1000][6])
+int generateMoves(char board[12][12], int moveList[1000][6])
 {
     //Check each square for a piece
     for(int i = 2; i < 10; i++)
@@ -128,12 +128,12 @@ int generateMoves(char board[12][12], int List[1000][6])
 
         for(int j = 2; j < 10; j++)
         {
-            char square = board[i][j];
+            char selfPiece = board[i][j];
             int current[2] = {i,j};
-            findMoves(square,current,board);
+            findMoves(selfPiece,current,board);
 
             //Assign moves to moveList
-            addMoves(square,List,current[0],current[1],1,2);
+            addMoves(selfPiece,moveList,current[0],current[1],1,2);
 
 
         };
