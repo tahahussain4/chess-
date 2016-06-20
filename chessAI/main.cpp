@@ -1,10 +1,11 @@
-
 #include <iostream>
 #include <stdio.h>
 #include <vector>
 #include "moveFunctions.h"
 #include "interface.h"
 #include "generationFunctions.h"
+
+using namespace std;
 
 int main()
 {
@@ -25,11 +26,11 @@ int main()
                     };
 
     //Initializing array to store generated moves
-    //std::vector< int > moveList(1000)(6);
+    vector< vector<int> > moveList(1, vector<int>(6));
+    //int moveList[1000][6];
 
-    int moveList[1000][6];
-
-    addMoves('P',moveList,1,2,3,4);
+    moveList[0][0] = 2;
+    printf("%i",moveList[0][0]);
 
     printBoard(fullBoard);
 
@@ -55,7 +56,7 @@ int main()
 
         movePiece(current,next,fullBoard);
 
-        generateMoves(fullBoard,moveList);
+        //generateMoves(fullBoard,moveList);
 
         printBoard(fullBoard);
     }

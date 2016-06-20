@@ -3,15 +3,9 @@
 #include <vector>
 #include "moveFunctions.h"
 
-int addMoves(char pieceID, int moveList[1000][6], int cx, int cy, int nx, int ny)
+int addMoves(char pieceID, int moveList[][6], int cx, int cy, int nx, int ny)
 {
 
-    moveList[0][0] = pieceID;
-    moveList[0][1] = 't';
-    moveList[0][2] = cx;
-    moveList[0][3] = cy;
-    moveList[0][4] = nx;
-    moveList[0][5] = ny;
     return  0;
 }
 
@@ -123,7 +117,7 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
         moveKing(currentPosition,board);
         break;
     }
-    return 0;
+    return pieceID;
 }
 
 int generateMoves(char board[12][12], int List[1000][6])
