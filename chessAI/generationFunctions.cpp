@@ -3,10 +3,28 @@
 #include <vector>
 #include "moveFunctions.h"
 
-int addMoves(char pieceID, int moveList[1000][6], int cx, int cy, int nx, int ny)
+int addMoves(char pieceID, int moveList[1000][6], int cx, int cy)
 {
+    int moves = true;
+    int i = 0;
 
-    return  0;
+    while(moves)
+    {
+        if(moveList[i][0] == 0)
+        {
+            moveList[i][0] = pieceID;
+            moveList[i][1] = cx;
+            moveList[i][2] = cy;
+
+            moves = false;
+        }
+        else
+        {
+            i++;
+        }
+    }
+
+    return 0;
 }
 
 int checkPiece(char pieceID)
@@ -58,7 +76,7 @@ int checkPiece(char pieceID)
     return pieceID;
 }
 
-int findMoves(char pieceID,int currentPosition[2],char board[12][12])
+int findMoves(char pieceID,int currentPosition[2],char board[12][12],int moveList[1000][6])
 {
     //Returns which piece is occupying a given square and all the possible moves for that piece
 
@@ -70,11 +88,11 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
         break;
     case 'P':
         printf("This is a white pawn, and these are it's possible moves: \n");
-        movePawn(currentPosition,board);
+        movePawn(currentPosition,board,moveList);
         break;
     case 'p':
         printf("This is a black pawn and these are it's possible moves: \n");
-        movePawn(currentPosition,board);
+        movePawn(currentPosition,board,moveList);
         break;
     case 'R':
         printf("This is a white rook and these are it's possible moves: \n");
@@ -122,6 +140,7 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12])
 
 int generateMoves(char board[12][12], int moveList[1000][6])
 {
+    int n = 0;
     //Check each square for a piece
     for(int i = 2; i < 10; i++)
     {
@@ -130,11 +149,12 @@ int generateMoves(char board[12][12], int moveList[1000][6])
         {
             char selfPiece = board[i][j];
             int current[2] = {i,j};
-            findMoves(selfPiece,current,board);
+
+            findMoves(selfPiece,current,board,moveList);
 
             //Assign moves to moveList
-            addMoves(selfPiece,moveList,current[0],current[1],1,2);
 
+            addMoves(selfPiece,moveList,current[0],current[1]);
 
         };
         printf("\n");

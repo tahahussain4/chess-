@@ -29,6 +29,23 @@ int main()
     //vector< vector<int> > moveList(1000, vector<int>(6));
     int moveList[1000][6];
 
+    for(int i = 0; i < 1001 ; i++)
+    {
+        moveList[i][0]=0;
+    }
+
+    generateMoves(fullBoard,moveList);
+
+    for(int i = 0; i < 1001 ; i++)
+    {
+        printf("%i",moveList[i][0]);
+        printf("%i",moveList[i][1]);
+        printf("%i",moveList[i][2]);
+        printf("%i",moveList[i][3]);
+        printf("%i",moveList[i][4]);
+        printf("\n");
+    }
+
     printBoard(fullBoard);
 
     int game = true;

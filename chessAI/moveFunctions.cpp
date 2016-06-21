@@ -20,7 +20,7 @@ int movePiece(int currentPosition[2], int nextPosition[2], char board[12][12])
 
 }
 
-int movePawn(int currentPosition[2],char board[12][12])
+int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
 {
     int top = true;
     int top_left = true;
@@ -33,6 +33,8 @@ int movePawn(int currentPosition[2],char board[12][12])
             if(board[currentPosition[0] + 1][currentPosition[1]] == 'o')
             {
                 printf("This is possible (t) \n");
+                moveList[0][3] = currentPosition[1];
+                moveList[0][4] = currentPosition[0] + 1;
                 top = false;
             }
             else
