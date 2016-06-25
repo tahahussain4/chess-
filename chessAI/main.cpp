@@ -33,11 +33,14 @@ int main()
 
     generateMoves(fullBoard,moveList);
 
-    printf("%i",moveList[0][0]);
-    printf("%i",moveList[0][1]);
-    printf("%i",moveList[0][2]);
-    printf("%i",moveList[0][3]);
-    printf("%i",moveList[0][4]);
+    for(int i = 0; i < 64; i++){
+        printf("%i",moveList[i][0]);
+        printf("%i",moveList[i][1]);
+        printf("%i",moveList[i][2]);
+        printf("%i",moveList[i][3]);
+        printf("%i",moveList[i][4]);
+        printf("\n");
+    }
 
     printBoard(fullBoard);
 

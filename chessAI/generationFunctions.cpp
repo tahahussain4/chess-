@@ -7,12 +7,16 @@ int addMoves(char pieceID, int moveList[1000][6], int cx, int cy)
 {
     int moves = true;
     int i = 0;
+    //int current = {cy,cx};
+
+
+    //findMoves(pieceID,current,board,moveList);
 
     while(moves)
     {
         if(moveList[i][0] == 0)
         {
-            moveList[i][0] = 5;//pieceID;
+            moveList[i][0] = 1;//pieceID;
             moveList[i][1] = cx;
             moveList[i][2] = cy;
 
@@ -151,7 +155,7 @@ int generateMoves(char board[12][12], int moveList[1000][6])
             char selfPiece = board[i][j];
             int current[2] = {i,j};
 
-            findMoves(selfPiece,current,board,moveList);
+            //findMoves(selfPiece,current,board,moveList);
 
             //Assign moves to moveList
 
