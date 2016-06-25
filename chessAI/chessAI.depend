@@ -3,7 +3,7 @@
 	<iostream>
 	<stdio.h>
 
-1466500455 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\main.cpp
+1466828407 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\main.cpp
 	<iostream>
 	<stdio.h>
 	<vector>
@@ -15,12 +15,12 @@
 
 1465099174 c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.h
 
-1466496131 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.cpp
+1466574328 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.cpp
 	<iostream>
 	<stdio.h>
 	"generationFunctions.h"
 
-1466500340 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\generationfunctions.cpp
+1466826188 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\generationfunctions.cpp
 	<iostream>
 	<stdio.h>
 	<vector>

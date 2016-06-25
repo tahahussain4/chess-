@@ -12,7 +12,7 @@ int addMoves(char pieceID, int moveList[1000][6], int cx, int cy)
     {
         if(moveList[i][0] == 0)
         {
-            moveList[i][0] = pieceID;
+            moveList[i][0] = 5;//pieceID;
             moveList[i][1] = cx;
             moveList[i][2] = cy;
 
@@ -24,6 +24,7 @@ int addMoves(char pieceID, int moveList[1000][6], int cx, int cy)
         }
     }
 
+    //moveList[0][0] = 9;
     return 0;
 }
 
