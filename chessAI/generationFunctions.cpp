@@ -155,7 +155,7 @@ int generateMoves(char board[12][12], int moveList[1000][6])
             char selfPiece = board[i][j];
             int current[2] = {i,j};
 
-            //findMoves(selfPiece,current,board,moveList);
+            findMoves(selfPiece,current,board,moveList);
 
             //Assign moves to moveList
 

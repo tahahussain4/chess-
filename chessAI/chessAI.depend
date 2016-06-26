@@ -15,12 +15,12 @@
 
 1465099174 c:\users\owner\dropbox\programming files\github\chess-\chessai\interface.h
 
-1466832747 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.cpp
+1466889924 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\movefunctions.cpp
 	<iostream>
 	<stdio.h>
 	"generationFunctions.h"
 
-1466831565 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\generationfunctions.cpp
+1466889976 source:c:\users\owner\dropbox\programming files\github\chess-\chessai\generationfunctions.cpp
 	<iostream>
 	<stdio.h>
 	<vector>
