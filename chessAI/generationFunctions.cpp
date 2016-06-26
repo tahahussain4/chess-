@@ -159,7 +159,7 @@ int generateMoves(char board[12][12], int moveList[1000][6])
 
             //Assign moves to moveList
 
-            addMoves(selfPiece,moveList,current[0],current[1]);
+            addMoves(selfPiece,moveList,current[1],current[0]);
 
         };
         printf("\n");
