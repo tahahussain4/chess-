@@ -3,35 +3,6 @@
 #include <vector>
 #include "moveFunctions.h"
 
-int addMoves(char pieceID, int moveList[1000][6], int cx, int cy)
-{
-    int moves = true;
-    int i = 0;
-    //int current = {cy,cx};
-
-
-    //findMoves(pieceID,current,board,moveList);
-
-    while(moves)
-    {
-        if(moveList[i][0] == 0)
-        {
-            moveList[i][0] = 1;//pieceID;
-            moveList[i][1] = cx;
-            moveList[i][2] = cy;
-
-            moves = false;
-        }
-        else
-        {
-            i++;
-        }
-    }
-
-    //moveList[0][0] = 9;
-    return 0;
-}
-
 int checkPiece(char pieceID)
 {
     //When checking for the possible moves of a given piece, this function returns which piece is under attack
@@ -156,10 +127,6 @@ int generateMoves(char board[12][12], int moveList[1000][6])
             int current[2] = {i,j};
 
             findMoves(selfPiece,current,board,moveList);
-
-            //Assign moves to moveList
-
-            addMoves(selfPiece,moveList,current[1],current[0]);
 
         };
         printf("\n");

@@ -37,6 +37,9 @@ int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
                 int i = 0;
                 while(test){
                     if(moveList[i][3] == 0 && moveList[i][4] == 0){
+                        moveList[i][0] = 'p';
+                        moveList[i][1] = currentPosition[1];
+                        moveList[i][2] = currentPosition[0];
                         moveList[i][3] = currentPosition[1];
                         moveList[i][4] = currentPosition[0] + 1;
                         test = false;
