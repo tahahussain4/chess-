@@ -64,6 +64,22 @@ int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
             if(board[currentPosition[0] + 1][currentPosition[1] - 1] == 'o')
             {
                 printf("This is possible (tl) \n");
+                int test = true;
+                int i = 0;
+                while(test){
+                    if(moveList[i][3] == 0 && moveList[i][4] == 0){
+                        moveList[i][0] = 'p';
+                        moveList[i][1] = currentPosition[1];
+                        moveList[i][2] = currentPosition[0];
+                        moveList[i][3] = currentPosition[1] - 1;
+                        moveList[i][4] = currentPosition[0] + 1;
+                        test = false;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
                 top_left = false;
             }
             else
@@ -79,6 +95,22 @@ int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
             if(board[currentPosition[0] + 1][currentPosition[1]] == 'o')
             {
                 printf("This is possible (tr) \n");
+                int test = true;
+                int i = 0;
+                while(test){
+                    if(moveList[i][3] == 0 && moveList[i][4] == 0){
+                        moveList[i][0] = 'p';
+                        moveList[i][1] = currentPosition[1];
+                        moveList[i][2] = currentPosition[0];
+                        moveList[i][3] = currentPosition[1] + 1;
+                        moveList[i][4] = currentPosition[0];
+                        test = false;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
                 top_right = false;
             }
             else
