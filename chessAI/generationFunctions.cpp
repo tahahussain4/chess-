@@ -72,11 +72,11 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12],int moveLis
         break;
     case 'R':
         printf("This is a white rook and these are it's possible moves: \n");
-        moveRook(currentPosition,board);
+        moveRook(currentPosition,board,moveList);
         break;
     case 'r':
         printf("This is a black rook and these are it's possible moves: \n");
-        moveRook(currentPosition,board);
+        moveRook(currentPosition,board,moveList);
         break;
     case 'N':
         printf("This is a white knight and these are it's possible moves: \n");

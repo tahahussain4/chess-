@@ -33,7 +33,7 @@ int main()
 
     generateMoves(fullBoard,moveList);
 
-    for(int i = 0; i < 64; i++){
+    for(int i = 0; i < 144; i++){
         printf("%i",moveList[i][0]);
         printf("%i",moveList[i][1]);
         printf("%i",moveList[i][2]);
