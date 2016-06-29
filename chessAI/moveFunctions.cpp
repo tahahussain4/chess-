@@ -33,7 +33,7 @@ int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
             if(board[currentPosition[0] + 1][currentPosition[1]] == 'o')
             {
                 printf("This is possible (t) \n");
-                /*int test = true;
+                int test = true;
                 int i = 0;
                 while(test){
                     if(moveList[i][3] == 0 && moveList[i][4] == 0){
@@ -48,7 +48,7 @@ int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
                     {
                         i++;
                     }
-                }*/
+                }
                 top = false;
             }
             else
@@ -64,7 +64,7 @@ int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
             if(board[currentPosition[0] + 1][currentPosition[1] - 1] == 'o')
             {
                 printf("This is possible (tl) \n");
-                /*int test = true;
+                int test = true;
                 int i = 0;
                 while(test){
                     if(moveList[i][3] == 0 && moveList[i][4] == 0){
@@ -79,7 +79,7 @@ int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
                     {
                         i++;
                     }
-                }*/
+                }
                 top_left = false;
             }
             else
@@ -95,7 +95,7 @@ int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
             if(board[currentPosition[0] + 1][currentPosition[1]] == 'o')
             {
                 printf("This is possible (tr) \n");
-                /*int test = true;
+                int test = true;
                 int i = 0;
                 while(test){
                     if(moveList[i][3] == 0 && moveList[i][4] == 0){
@@ -110,7 +110,7 @@ int movePawn(int currentPosition[2],char board[12][12], int moveList[1000][6])
                     {
                         i++;
                     }
-                }*/
+                }
                 top_right = false;
             }
             else
@@ -140,16 +140,16 @@ int moveRook(int currentPosition[2],char board[12][12],int moveList[1000][6])
             if(board[currentPosition[0] + n][currentPosition[1]] == 'o')
             {
                 printf("This is possible (t) \n");
-                int test = true;
+                int okay = true;
                 int i = 0;
-                while(test){
+                while(okay){
                     if(moveList[i][1] = 0 && moveList[i][2] == 0){
                         moveList[i][0] = 'r';
                         moveList[i][1] = currentPosition[1];
                         moveList[i][2] = currentPosition[0];
                         moveList[i][3] = currentPosition[1];
                         moveList[i][4] = currentPosition[0] + n;
-                        test = false;
+                        okay = false;
                     }
                     else
                     {
@@ -217,7 +217,7 @@ int moveRook(int currentPosition[2],char board[12][12],int moveList[1000][6])
     return 0;
 }
 
-int moveBishop(int currentPosition[2],char board[12][12])
+int moveBishop(int currentPosition[2],char board[12][12],int moveList[1000][6])
 {
     int top_right = true;
     int top_left = true;
@@ -232,6 +232,22 @@ int moveBishop(int currentPosition[2],char board[12][12])
             if(board[currentPosition[0] + n][currentPosition[1] + n] == 'o')
             {
                 printf("This is possible (tr) \n");
+                int okay = true;
+                int i = 0;
+                while(okay){
+                    if(moveList[i][1] = 0 && moveList[i][2] == 0){
+                        moveList[i][0] = 'b';
+                        moveList[i][1] = currentPosition[1];
+                        moveList[i][2] = currentPosition[0];
+                        moveList[i][3] = currentPosition[1] + n;
+                        moveList[i][4] = currentPosition[0] + n;
+                        okay = false;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
             }
             else
             {

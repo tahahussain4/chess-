@@ -88,11 +88,11 @@ int findMoves(char pieceID,int currentPosition[2],char board[12][12],int moveLis
         break;
     case 'B':
         printf("This is a white bishop and these are it's possible moves: \n");
-        moveBishop(currentPosition,board);
+        moveBishop(currentPosition,board,moveList);
         break;
     case 'b':
         printf("This is a black bishop and these are it's possible moves: \n");
-        moveBishop(currentPosition,board);
+        moveBishop(currentPosition,board,moveList);
         break;
     case 'Q':
         printf("This is a white queen and these are it's possible moves: \n");
